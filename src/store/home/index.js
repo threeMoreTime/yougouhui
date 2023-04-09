@@ -1,27 +1,28 @@
 import {reqCategoryList} from '@/api'
 //home模块的数据仓库
 const state ={ 
-  arr:[]
+  // 起始值是一个空数组 根据接口返回值创建数据
+  categoryList:[],
 };
-const computed ={};
+const computed ={
+  
+
+};
 const mutations ={
-  // test(state,res){
-  //   state.arr=res
-  //   console.log(state.arr)
-  // }
+  CATEGORYLIST(state,categoryList){
+      state.categoryList = categoryList
+  },
 };
 const actions = {
-    async CategoryList({commit}) {
+  
+    async categoryList({commit}) {
       let result = await reqCategoryList();
       
-      if(result.code == 200){
-        console.log('请求成功');
-        console.log(result);
-      }else{
-        console.log('请求错误');
-      }
-      // commit("test",result)
-     
+       if(result.code == 200){
+         commit('CATEGORYLIST',result.data);
+       }else{
+         console.log('请求错误');
+        }
     }
   };
 const getters ={};
