@@ -3,7 +3,35 @@
     <!-- <h1>{{categoryList}}</h1> -->
     <!-- <img src="../../store/home"> -->
               <div class="container">
-                  <h2 class="all">全部商品分类</h2>
+                    <div  @mouseleave="leaveindex()">
+                        <h2 class="all">全部商品分类</h2>
+                        <div class="sort"  >
+                            <div class="all-sort-list2" >
+                                <div  :class="{downbg:mouseindex==index}" class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId">
+                                    <h3 @mouseenter="getListindex(index)">
+                                        <a href="">{{c1.categoryName}}索引值{{index}}</a>
+                                    </h3>
+                                    <!-- 二级分类 -->
+                                    <div class="item-list" :style="{dispalay:mouseindex==index?'block':'none'}">
+                                        <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
+                                            <dl class="fore" >
+                                                <dt>
+                                                    <a>
+                                                            {{c2.categoryName}}
+                                                        </a>
+                                                    </dt>
+                                                    <dd >
+                                                        <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId" >
+                                                            <a >{{c3.categoryName}}</a>
+                                                        </em>
+                                                    </dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
                   <nav class="nav">
                       <a href="###">服装城</a>
                       <a href="###">美妆馆</a>
@@ -14,37 +42,16 @@
                       <a href="###">有趣</a>
                       <a href="###">秒杀</a>
                   </nav>
-                  <div class="sort">
-                      <div class="all-sort-list2">
-                          <div  :class="{downbg:mouseindex==index}" class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId">
-                              <h3 @mouseenter="getListindex(index)">
-                                  <a href="">{{c1.categoryName}}索引值{{index}}</a>
-                              </h3>
-                              <div class="item-list clearfix" >
-                                  <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
-                                      <dl class="fore">
-                                           <dt>
-                                                <a>
-                                                    {{c2.categoryName}}
-                                                </a>
-                                            </dt>
-                                            <dd>
-                                                <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                                                    <a >{{c3.categoryName}}</a>
-                                                </em>
-                                            </dd>
-                                        </dl>
-                                   </div>
-                               </div>
-                            </div>
-                        </div>
-                  </div>
+                 
               </div>
           </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex';
+// 按需引入
+import throttle from 'lodash/throttle';
+console.log(throttle)
 export default {
   name: 'TypeNav',
 data(){
@@ -53,9 +60,15 @@ data(){
    } 
 },
 methods:{
-    getListindex(index){
+    // 节流写法
+    getListindex:throttle(function(index){
         this.mouseindex = index;
-        // alert('1111');
+        console.log('触发节流了');
+        
+    },100),
+    leaveindex(){
+        // 鼠标移出恢复
+        this.mouseindex = -1;
     }
 },
     mounted(){
@@ -185,11 +198,11 @@ methods:{
                             }
                         }
 
-                        &:hover {
-                            .item-list {
-                                display: block;
-                            }
-                        }
+                        // &:hover {
+                        //     .item-list {
+                        //         display: block;
+                        //     }
+                        // }
                     }
                 }
             }
