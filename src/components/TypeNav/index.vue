@@ -6,13 +6,13 @@
                     <div  @mouseleave="leaveindex()">
                         <h2 class="all">全部商品分类</h2>
                         <div class="sort"  >
-                            <div class="all-sort-list2" >
+                            <div class="all-sort-list2"  @click="goSearch">
                                 <div  :class="{downbg:mouseindex==index}" class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId">
                                     <h3 @mouseenter="getListindex(index)">
-                                        <a href="">{{c1.categoryName}}索引值{{index}}</a>
+                                        <a href="">{{c1.categoryName}}</a>
                                     </h3>
                                     <!-- 二级分类 -->
-                                    <div class="item-list" :style="{dispalay:mouseindex==index?'block':'none'}">
+                                    <div class="item-list" :style="{display:mouseindex==index?'block':'none'}">
                                         <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
                                             <dl class="fore" >
                                                 <dt>
@@ -69,6 +69,10 @@ methods:{
     leaveindex(){
         // 鼠标移出恢复
         this.mouseindex = -1;
+    },
+    // 委派点击事件跳转搜索页面
+    goSearch(){
+        this.$router.push('./search');
     }
 },
     mounted(){
