@@ -9,22 +9,23 @@
                             <div class="all-sort-list2"  @click="goSearch">
                                 <div  :class="{downbg:mouseindex==index}" class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId">
                                     <h3 @mouseenter="getListindex(index)">
-                                        <a href="">{{c1.categoryName}}</a>
+                                        <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
                                     </h3>
                                     <!-- 二级分类 -->
                                     <div class="item-list" :style="{display:mouseindex==index?'block':'none'}">
                                         <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
-                                            <dl class="fore" >
-                                                <dt>
-                                                    <a>
-                                                            {{c2.categoryName}}
-                                                        </a>
-                                                    </dt>
-                                                    <dd >
-                                                        <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId" >
-                                                            <a >{{c3.categoryName}}</a>
-                                                        </em>
-                                                    </dd>
+                                                <dl class="fore" >
+                                                        <dt>
+                                                            <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">
+                                                                {{c2.categoryName}}
+                                                            </a>
+                                                        </dt>
+                                                        <dd >
+                                                            <!-- 三级分类 -->
+                                                             <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId" >
+                                                                <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                                                            </em>
+                                                        </dd>
                                                 </dl>
                                             </div>
                                         </div>
@@ -51,7 +52,6 @@
 import { mapState, mapActions } from 'vuex';
 // 按需引入
 import throttle from 'lodash/throttle';
-console.log(throttle)
 export default {
   name: 'TypeNav',
 data(){
@@ -63,16 +63,37 @@ methods:{
     // 节流写法
     getListindex:throttle(function(index){
         this.mouseindex = index;
-        console.log('触发节流了');
-        
+        // console.log('触发节流了');
     },100),
     leaveindex(){
         // 鼠标移出恢复
         this.mouseindex = -1;
     },
     // 委派点击事件跳转搜索页面
-    goSearch(){
-        this.$router.push('./search');
+    goSearch( event){
+         //第一个问题:把子节点当中a标签，我加上自定义属性data-categoryName，其余的子节点是没有的
+        let element = event.target;
+        //获取到当前出发这个事件的节点[h3、a、dt、d1]，需要带有data-categoryname这样节点[一定是a标签]
+        //节点有一个属性dataset属性，可以获取节点的自定义属性与属性值
+        let {categoryname,category1id,category2id,category3id} = element.dataset;
+        //如果标签身上拥有categoryname一定是a标签
+        if(categoryname){
+            //整理路由跳转的参数
+          let location = {name:"search"};
+          let query = {categoryName:categoryname}
+           if(category1id){
+            query.category1id=category1id 
+           }else if(category2id){
+            query.category2Id=category2id
+           }else if(category3id){
+            query.category3Id=category3id
+           }
+           const params = {...location,query};
+           console.log(params);
+           this.$router.push(params)
+        }
+        
+        // this.$router.push('./search');
     }
 },
     mounted(){
@@ -85,7 +106,7 @@ methods:{
     })
   }
 
-}; 
+};
 // 'home',
 </script>
 
