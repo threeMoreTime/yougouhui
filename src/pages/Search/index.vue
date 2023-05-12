@@ -1,13 +1,15 @@
 <template>
   <div>
     <!-- 分类栏 -->
-   <TypeNav />
+    <TypeNav />
   </div>
 </template>
 
 <script>
+
 export default {
   name: "",
+
 };
 </script>
 

@@ -112,7 +112,10 @@
 <script>
 export default{
 	name:'ListContainer',
-
+    mounted(){
+        // 派发action：通过vuex发起请求将数据存放在仓库中
+        this.$store.dispatch('getbannerlist')
+    }
 }
 
 </script>

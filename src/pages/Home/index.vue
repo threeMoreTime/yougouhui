@@ -1,5 +1,5 @@
 <template>
-	 <div>
+  <div>
     <TypeNav />
     <!--列表-->
     <ListContainer />
@@ -19,24 +19,24 @@
 </template>
 
 <script>
-  import Brand from './Brand'
-  import Floor from './Floor';
-  import Like from './Like';
-  import ListContainer from './ListContainer';  
-  import Rank from './Rank/'
-  import Recommend from './Recommend';
-  export default {
-    name: 'Home',
-    components: {
-      Brand,
-      Floor,
-      Like,
-      ListContainer,
-      Rank,
-      Recommend,
-    }
+import Brand from './Brand'
+import Floor from './Floor';
+import Like from './Like';
+import ListContainer from './ListContainer';
+import Rank from './Rank/'
+import Recommend from './Recommend';
+export default {
+  name: 'Home',
+  components: {
+    Brand,
+    Floor,
+    Like,
+    ListContainer,
+    Rank,
+    Recommend,
+  }, mounted() {
   }
+}
 </script>
 
-<style>
-</style>
+<style></style>

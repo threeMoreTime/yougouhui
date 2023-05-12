@@ -111,8 +111,8 @@ export default {
         },
     },
     mounted() {
-        // 通知Vuex发送请求 获取数据 存储与仓库中
-        this.$store.dispatch("categoryList");
+        console.log('我挂载了一次');
+        
         if (this.$route.path != "/home") {
             this.show = false;
         }
@@ -264,4 +264,5 @@ export default {
             background: rgb(44, 202, 255);
         }
     }
-}</style>
+}
+</style>
