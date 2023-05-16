@@ -1,4 +1,4 @@
-import { reqCategoryList, getbannerlist } from '@/api'
+import { reqCategoryList, getbannerlist, getfloorlist } from '@/api'
 
 //home模块的数据仓库
 const state = {
@@ -15,7 +15,7 @@ const mutations = {
   },
 };
 const actions = {
-
+  // 商品列表数据
   async categoryList({ commit }) {
     let result = await reqCategoryList();
 
@@ -25,9 +25,14 @@ const actions = {
       console.log('请求错误');
     }
   },
+  // 上层轮播图数据
   async getbannerlist(){
     let  result = await getbannerlist();
-    console.log('result');
+    console.log(result);
+  }, //底层轮播图数据
+  async getfloorlist(){
+    let result = await getfloorlist();
+    console.log(result);
     
   }
 };

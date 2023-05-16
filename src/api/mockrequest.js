@@ -3,7 +3,7 @@ import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 const requests = axios.create({
     // 基础路径
-    baseURL: '/api',
+    baseURL: './mock',
     // 超时时间5秒
     timeout: 5000,
 });
