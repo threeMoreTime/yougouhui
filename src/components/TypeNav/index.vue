@@ -111,15 +111,13 @@ export default {
         },
     },
     mounted() {
-        console.log('我挂载了一次');
-        
         if (this.$route.path != "/home") {
             this.show = false;
         }
     },
     computed: {
         ...mapState({
-            categoryList: (state) => state.home.categoryList,
+            categoryList: (state) => state.home.categoryList,//将 Vuex store 中的 categoryList 数据映射到组件的计算属性中
         }),
     },
 };

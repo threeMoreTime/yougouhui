@@ -4,6 +4,7 @@ import { reqCategoryList, getbannerlist, getfloorlist } from '@/api'
 const state = {
   // 起始值是一个空数组 根据接口返回值创建数据
   categoryList: [],
+  bannerList: [],
 };
 const computed = {
 
@@ -13,6 +14,9 @@ const mutations = {
   CATEGORYLIST(state, categoryList) {
     state.categoryList = categoryList
   },
+  BANNERLIST(state, bannerList) {
+    state.bannerList = bannerList;
+  }
 };
 const actions = {
   // 商品列表数据
@@ -25,15 +29,22 @@ const actions = {
       console.log('请求错误');
     }
   },
-  // 上层轮播图数据
-  async getbannerlist(){
-    let  result = await getbannerlist();
-    console.log(result);
-  }, //底层轮播图数据
-  async getfloorlist(){
+  // 上层轮播图数据  getbannerlist
+  async getbannerlist({ commit }) {
+    try {
+      let result = await getbannerlist();
+      console.log(result, '我是vuex中请求的数据');
+      commit('BANNERLIST', result.data);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  },
+  //底层轮播图数据
+  async getfloorlist() {
     let result = await getfloorlist();
     console.log(result);
-    
+
   }
 };
 const getters = {};

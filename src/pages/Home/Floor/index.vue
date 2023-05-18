@@ -95,7 +95,7 @@
 <script>
 export default {
 	name: 'floor',
-	mounted(){
+	mounted() {
 		this.$store.dispatch('getfloorlist');
 	}
 }
