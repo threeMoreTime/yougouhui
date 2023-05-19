@@ -113,25 +113,38 @@ export default {
         // 派发action：通过vuex发起请求将数据存放在仓库中
         this.$store.dispatch('getbannerlist');
         //设置定时器是因为得先有仓库的数据才能初始化        
-        setTimeout(() => {
-            var mySwiper = new Swiper('.swiper-container', {
-                direction: 'horizontal', // 垂直切换选项
-                loop: true, // 循环模式选项
 
-                // 如果需要分页器
-                pagination: {
-                    el: '.swiper-pagination',
-                },
-
-                // 如果需要前进后退按钮
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            })
-        }, 2000)
 
     },
+    watch: {
+        //监听bannerList的数据变化 从空数组变成四个数据
+        bannerList: {
+            handler(newValue, oldValue) {
+                //nextTick在v-for循环完后再渲染数据上去
+                this.$nextTick(() => {
+                    var mySwiper = new Swiper('.swiper-container', {
+                        direction: 'horizontal', // 垂直切换选项
+                        loop: true, // 循环模式选项
+
+                        // 如果需要分页器
+                        pagination: {
+                            el: '.swiper-pagination',
+                        },
+
+                        // 如果需要前进后退按钮
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    })
+                })
+
+            }
+
+        }
+
+    },
+
     computed: {
 
         ...mapState({

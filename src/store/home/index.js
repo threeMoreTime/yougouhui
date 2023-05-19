@@ -5,6 +5,7 @@ const state = {
   // 起始值是一个空数组 根据接口返回值创建数据
   categoryList: [],
   bannerList: [],
+  floorList:[],
 };
 const computed = {
 
@@ -16,6 +17,9 @@ const mutations = {
   },
   BANNERLIST(state, bannerList) {
     state.bannerList = bannerList;
+  },
+  FLOORLIST(state,floorList){
+    state.floorList = floorList
   }
 };
 const actions = {
@@ -33,7 +37,7 @@ const actions = {
   async getbannerlist({ commit }) {
     try {
       let result = await getbannerlist();
-      console.log(result, '我是vuex中请求的数据');
+      // console.log(result, 'bannner轮播图中的数据');
       commit('BANNERLIST', result.data);
     }
     catch (error) {
@@ -41,9 +45,17 @@ const actions = {
     }
   },
   //底层轮播图数据
-  async getfloorlist() {
-    let result = await getfloorlist();
-    console.log(result);
+  async getfloorlist({commit}) {
+    
+    try {
+      let result = await getfloorlist();
+      commit('FLOORLIST',result.data);
+      // console.log(result,'floor轮播图中的数据');
+      
+    } catch (error) {
+      console.log('error');
+      
+    }
 
   }
 };

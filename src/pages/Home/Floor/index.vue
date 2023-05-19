@@ -46,15 +46,12 @@
 						<div class="floorBanner">
 							<div class="swiper-container" id="floor1Swiper">
 								<div class="swiper-wrapper">
-									<div class="swiper-slide">
-										<img src="./images/floor-1-b01.png">
+									<div class="swiper-slide" v-for="item in floorList" :key="item.id">
+										<div v-for="(item1,index) in item.carouselList" :key="index">
+											<img :src="item1.imgUrl">
+										</div>
+
 									</div>
-									<!--  <div class="swiper-slide">
-                                            <img src="./images/floor-1-b02.png">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="./images/floor-1-b03.png">
-                                        </div> -->
 								</div>
 								<!-- 如果需要分页器 -->
 								<div class="swiper-pagination"></div>
@@ -93,11 +90,46 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import Swiper from 'swiper';
+import 'swiper/css/swiper.css'
 export default {
 	name: 'floor',
 	mounted() {
 		this.$store.dispatch('getfloorlist');
-	}
+	},
+	watch: {
+		floorList: {
+			handler(newValue,oldValue) {
+				this.$nextTick(()=>{
+					var mySwiper = new Swiper('.swiper-container', {
+                        direction: 'horizontal', // 垂直切换选项
+                        loop: true, // 循环模式选项
+
+                        // 如果需要分页器
+                        pagination: {
+                            el: '.swiper-pagination',
+                        },
+
+                        // 如果需要前进后退按钮
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    })
+				})
+			}
+		}
+
+	},
+	computed: {
+		...mapState({
+		floorList: (state) => state.home.floorList,//获取vuex中store的floor轮播图数据
+	})
+	},
+	
+
+
 }
 </script>
 
@@ -234,5 +266,4 @@ export default {
 			}
 		}
 	}
-}
-</style>
+}</style>
