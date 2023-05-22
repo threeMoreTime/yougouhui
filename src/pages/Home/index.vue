@@ -50,12 +50,9 @@ export default {
   methods:{
     getarray(){
       getfloorlist().then((res)=>{
-        console.log(res.code,'1111'); 
         // this.result= res.data
         if(res.code=='200'){
           this.result= res.data
-          console.log( this.result,'222222');
-          
         }
       })
     }
