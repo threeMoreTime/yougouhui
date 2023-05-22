@@ -1,8 +1,8 @@
 <template>
 	<div class="floor">
 		<div class="py-container">
-			<div class="title clearfix">
-				<h3 class="fl">家用电器</h3>
+			<div class="title clearfix" >
+				<h3 class="fl">{{list.name}}</h3>
 				<div class="fr">
 					<ul class="nav-tabs clearfix">
 						<li class="active">
@@ -46,10 +46,10 @@
 						<div class="floorBanner">
 							<div class="swiper-container" id="floor1Swiper">
 								<div class="swiper-wrapper">
-									<div class="swiper-slide" v-for="item in floorList" :key="item.id">
-										<div v-for="(item1,index) in item.carouselList" :key="index">
-											<img :src="item1.imgUrl">
-										</div>
+									<div class="swiper-slide">
+										
+											<img src="">
+										
 
 									</div>
 								</div>
@@ -90,46 +90,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Swiper from 'swiper';
-import 'swiper/css/swiper.css'
+
 export default {
 	name: 'floor',
-	mounted() {
-		this.$store.dispatch('getfloorlist');
-	},
-	watch: {
-		floorList: {
-			handler(newValue,oldValue) {
-				this.$nextTick(()=>{
-					var mySwiper = new Swiper('.swiper-container', {
-                        direction: 'horizontal', // 垂直切换选项
-                        loop: true, // 循环模式选项
-
-                        // 如果需要分页器
-                        pagination: {
-                            el: '.swiper-pagination',
-                        },
-
-                        // 如果需要前进后退按钮
-                        navigation: {
-                            nextEl: '.swiper-button-next',
-                            prevEl: '.swiper-button-prev',
-                        },
-                    })
-				})
-			}
+	props:{
+		list:{
+			type:Object
 		}
-
-	},
-	computed: {
-		...mapState({
-		floorList: (state) => state.home.floorList,//获取vuex中store的floor轮播图数据
-	})
 	},
 	
-
-
+	 mounted() {
+	  console.log(this.list,'33333333');
+			
+	},
+	
 }
 </script>
 
@@ -266,4 +240,5 @@ export default {
 			}
 		}
 	}
-}</style>
+}
+</style>

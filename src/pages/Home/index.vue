@@ -10,7 +10,7 @@
     <!-- 猜你喜欢 -->
     <Like />
     <!--楼层-->
-    <Floor />
+    <Floor v-for="(item,index) in result" :key="index" :list="item" />
     <!--楼层-->
     <Floor />
     <!--商标-->
@@ -19,6 +19,10 @@
 </template>
 
 <script>
+import {getfloorlist} from '@/api'
+import { mapState } from 'vuex';
+import Swiper from 'swiper';
+import 'swiper/css/swiper.css'
 import Brand from './Brand'
 import Floor from './Floor';
 import Like from './Like';
@@ -27,6 +31,11 @@ import Rank from './Rank/'
 import Recommend from './Recommend';
 export default {
   name: 'Home',
+  data(){
+    return{
+      result:[]
+    }
+  },
   components: {
     Brand,
     Floor,
@@ -34,7 +43,22 @@ export default {
     ListContainer,
     Rank,
     Recommend,
-  }, mounted() {
+  },
+  mounted(){
+    this.getarray()
+  },
+  methods:{
+    getarray(){
+      getfloorlist().then((res)=>{
+        console.log(res.code,'1111'); 
+        // this.result= res.data
+        if(res.code=='200'){
+          this.result= res.data
+          console.log( this.result,'222222');
+          
+        }
+      })
+    }
   }
 }
 </script>
