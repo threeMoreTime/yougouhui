@@ -1,12 +1,12 @@
 <template>
 	<div class="floor">
 		<div class="py-container">
-			<div class="title clearfix" >
-				<h3 class="fl">{{list.name}}</h3>
+			<div class="title clearfix">
+				<h3 class="fl">{{ list.name }}</h3>
 				<div class="fr">
 					<ul class="nav-tabs clearfix">
-						<li class="active" v-for="(text,index) in list.navList" :key="index">
-							<a href="#tab1" data-toggle="tab" v-for="(item,index) in text.text" :key="index">{{item}}</a>
+						<li class="active" v-for="(text, index) in list.navList" :key="index">
+							<a href="#tab1" data-toggle="tab" v-for="(item, index) in text.text" :key="index">{{ item }}</a>
 						</li>
 					</ul>
 				</div>
@@ -16,7 +16,7 @@
 					<div class="floor-1">
 						<div class="blockgary">
 							<ul class="jd-list">
-								<li v-for="key in list.keywords" :key="key" >{{key}}</li>
+								<li v-for="key in list.keywords" :key="key">{{ key }}</li>
 							</ul>
 							<img :src="list.imgUrl" />
 						</div>
@@ -24,13 +24,14 @@
 							<div class="swiper-container" id="floor1Swiper">
 								<div class="swiper-wrapper">
 									<div class="swiper-slide" v-for="item in list" :key="item.id">
-										<div v-for="(imgs,index) in item.carouselList" :key="index">
+										{{ item.carouselList }}
+										<div v-for="imgs in item.carouselList" :key="imgs.id">
 											<img :src="imgs.imgUrl">
-											{{item.carouselList}}
+
 											<!-- carouselList中的数据没渲染上 -->
 										</div>
-											
-										
+
+
 
 									</div>
 								</div>
@@ -45,22 +46,22 @@
 						<div class="split">
 							<span class="floor-x-line"></span>
 							<div class="floor-conver-pit">
-								<img src="./images/floor-1-2.png" />
+								<img :src="list.recommendList[0]" />
 							</div>
 							<div class="floor-conver-pit">
-								<img src="./images/floor-1-3.png" />
+								<img :src="list.recommendList[1]" />
 							</div>
 						</div>
 						<div class="split center">
-							<img src="./images/floor-1-4.png" />
+							<img :src="list.bigImg" />
 						</div>
 						<div class="split">
 							<span class="floor-x-line"></span>
 							<div class="floor-conver-pit">
-								<img src="./images/floor-1-5.png" />
+								<img :src="list.recommendList[2]" />
 							</div>
 							<div class="floor-conver-pit">
-								<img src="./images/floor-1-6.png" />
+								<img :src="list.recommendList[3]" />
 							</div>
 						</div>
 					</div>
@@ -71,14 +72,36 @@
 </template>
 
 <script>
-
+import { reqphone } from '@/api'
 export default {
 	name: 'floor',
-	props:{
-		list:{
-			type:Object
+	// data() {
+	// 	return {
+	// 		result:[]
+	// 	}
+	// },
+	props: {
+		list: {
+			type: Object
 		}
-	},	
+	}, mounted() {
+		this.getbannerlist()
+		// console.log(this.list.carouselList);
+
+	},
+	methods: {
+		getbannerlist() {
+			reqphone().then((result) => {
+				// this.result = result,
+				// console.log(thsi.result);
+				console.log(result);
+
+
+			}).catch((err) => {
+				console.log(err);
+			});
+		}
+	}
 }
 </script>
 
