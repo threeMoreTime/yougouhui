@@ -5,8 +5,10 @@
 				<h3 class="fl">{{ list.name }}</h3>
 				<div class="fr">
 					<ul class="nav-tabs clearfix">
-						<li class="active" v-for="(text, index) in list.navList" :key="index">
-							<a href="#tab1" data-toggle="tab" v-for="(item, index) in text.text" :key="index">{{ item }}</a>
+						<li class="active" v-for="(nav, index) in list.navList" :key="index">
+							<a href="#tab1" data-toggle="tab">
+								{{ nav.text}}
+								</a>
 						</li>
 					</ul>
 				</div>
@@ -23,16 +25,9 @@
 						<div class="floorBanner">
 							<div class="swiper-container" id="floor1Swiper">
 								<div class="swiper-wrapper">
-									<div class="swiper-slide" v-for="item in list" :key="item.id">
-										{{ item.carouselList }}
-										<div v-for="imgs in item.carouselList" :key="imgs.id">
-											<img :src="imgs.imgUrl">
-
-											<!-- carouselList中的数据没渲染上 -->
-										</div>
-
-
-
+									<div class="swiper-slide" v-for="item in list.carouselList" :key="item.id">
+										<!-- carouselList中的数据 -->
+										<img :src="item.imgUrl">										
 									</div>
 								</div>
 								<!-- 如果需要分页器 -->
@@ -73,6 +68,8 @@
 
 <script>
 import { reqphone } from '@/api'
+import Swiper from 'swiper';
+import 'swiper/css/swiper.css'
 export default {
 	name: 'floor',
 	// data() {
@@ -85,23 +82,24 @@ export default {
 			type: Object
 		}
 	}, mounted() {
-		this.getbannerlist()
-		// console.log(this.list.carouselList);
+		var mySwiper = new Swiper('.swiper-container', {
+			direction: 'horizontal', // 垂直切换选项
+			loop: true, // 循环模式选项
+
+			// 如果需要分页器
+			pagination: {
+				el: '.swiper-pagination',
+			},
+
+			// 如果需要前进后退按钮
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+		})
 
 	},
-	methods: {
-		getbannerlist() {
-			reqphone().then((result) => {
-				// this.result = result,
-				// console.log(thsi.result);
-				console.log(result);
 
-
-			}).catch((err) => {
-				console.log(err);
-			});
-		}
-	}
 }
 </script>
 
