@@ -14,4 +14,6 @@ export const reqbanner = () => requests({ method: 'get', url: '/cms/banner' });
 export const reuUserInfo = () => requests({ method: 'get', url: '/user/passport/auth/getUserInfo' });
 //  获取验证码数据
 export const reqphone = () => requests({ method: 'get', url: '/user/passport/sendCode/${17770215704}' });
-
+//获取商品信息
+// export const reqgoodslist = () => requests({ method: 'POST', url: '/' });
+export const reqgoodslist = (params)=>requests({method:'post',url:'/list',data:params})

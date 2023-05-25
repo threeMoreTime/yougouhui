@@ -12,11 +12,12 @@ import store from '@/store';
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
 Vue.use(router)
-// 测试三级联动数据请求
-import { reqCategoryList } from "@/api";
-reqCategoryList();
 // 引入mockServe.js---mock数据
 import '@/mock/mockServe'
+// 测试商品数据接口
+import {reqgoodslist} from '@/api'
+console.log(reqgoodslist({}));
+ 
 Vue.config.productionTip = false
 // 注册路由信息 使组件身上都具有$router和$route属性
 new Vue({
