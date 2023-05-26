@@ -328,30 +328,29 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
-// import {reqgoodslis} from "@/api";
-import reqgoodslist from "@/api";
+import {reqgoodslist} from "@/api";
+// import reqgoodslist from "@/api";
 export default {
   name: 'Search',
   data() {
     return {
       result: [],
+      params:{}
     }
   },
   components: {
     SearchSelector
   },
-  methods: {
-    getlist() {
-      reqgoodslist({}).then((res) => {
-        
-          this.result = res;
-          console.log(this.result);
-        
-      })
-    }
-  },
   mounted() {
-    this.getlist();
+    reqgoodslist(this.params).then((res) => {
+        
+        this.result = res.data;
+        console.log(this.result);
+       
+        
+      
+    })
+  
     // this.$store.dispatch('getsearchlist',{})
   }
 }
