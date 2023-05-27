@@ -5,8 +5,8 @@
                 <!--banner轮播-->
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="(p1, index) in bannerList" :key="p1.id">
-                            <img :src="p1.imgUrl" alt="轮播图片"></img>
+                        <div class="swiper-slide" v-for="p1 in bannerList" :key="p1.id">
+                            <img :src="p1.imgUrl" alt="轮播图片"/>
                         </div>
                     </div>
                     <!-- 如果需要分页器 -->

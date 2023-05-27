@@ -1,8 +1,8 @@
 <template>
-	<div class="floor">
+	<div class="floor" v-if="list">
 		<div class="py-container">
 			<div class="title clearfix">
-				<h3 class="fl">{{ list.name }}</h3>
+				<h3 class="fl" >{{ list.name }}</h3>
 				<div class="fr">
 					<ul class="nav-tabs clearfix">
 						<li class="active" v-for="(nav, index) in list.navList" :key="index">
