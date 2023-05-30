@@ -157,11 +157,14 @@ export default {
       })
     },
     RemoveCategoryName(){
+      this.params.categoryName=undefined;
       this.categoryName=undefined;
       this.category1Id=undefined;
       this.category2Id=undefined;
       this.category3Id=undefined;
+      this.$router.push('./search')
       this.getlist();
+      
     }
   },
   watch:{
