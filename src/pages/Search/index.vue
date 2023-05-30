@@ -113,26 +113,46 @@
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
 import { reqgoodslist } from "@/api";
-import { async } from 'q';
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 export default {
   name: 'Search',
   data() {
     return {
       result: [],
-      params: {}
+      params: {
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
+        categoryName: "",
+        keyword: "",
+        order: "",
+        pageNo: 1,
+        pageSize: 10,
+        props: [],
+        trademark: ""
+
+      }
     }
   },
   components: {
     SearchSelector
   },
-  mounted() {
-    reqgoodslist(this.params).then((res) => {
-      this.result = res.data;
-      // 派发cation给仓库
-      // this.$store.dispatch('getsearchlist', {})
-    })
+  beforeMount(){
+    //合并参数发送请求
+    Object.assign(this.params,this.$route.query,this.$route.params)
   },
+  mounted() {
+    this.getlist();
+  },
+  methods: {
+    getlist() {
+      reqgoodslist(this.params).then((res) => {
+        this.result = res.data;
+        // 派发cation给仓库
+        // this.$store.dispatch('getsearchlist', {})
+      })
+    }
+  }
   // watch: {
   //   //监听bannerList的数据变化 从空数组变成四个数据
   //   goodsList: {
