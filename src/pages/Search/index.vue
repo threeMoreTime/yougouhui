@@ -113,7 +113,7 @@
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
 import { reqgoodslist } from "@/api";
-// import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
   name: 'Search',
   data() {
