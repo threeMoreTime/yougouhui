@@ -12,7 +12,10 @@
           </ul>
           <ul class="fl sui-tag">
             <!-- 面包屑数据 -->
-            <li v-for="(item, index) in result.trademarkList" :key="index" class="with-x">{{ item.tmName }}</li>
+            <li v-if="params.categoryName" class="with-x">
+              {{ params.categoryName }}
+              <i @click="RemoveCategoryName">x</i>
+              </li>
 
           </ul>
         </div>
@@ -145,12 +148,33 @@ export default {
     this.getlist();
   },
   methods: {
+ 
     getlist() {
       reqgoodslist(this.params).then((res) => {
         this.result = res.data;
         // 派发cation给仓库
         // this.$store.dispatch('getsearchlist', {})
       })
+    },
+    RemoveCategoryName(){
+      this.categoryName=undefined;
+      this.category1Id=undefined;
+      this.category2Id=undefined;
+      this.category3Id=undefined;
+      this.getlist();
+    }
+  },
+  watch:{
+    // 监听路由信息，有变化则重新发送请求并改变请求参数
+    $route(newValue,oldValue){
+      Object.assign(this.params,this.$route.query,this.$route.params)
+      this.getlist();
+      // 重置分类id 接收下次新的分类id
+      this.category1Id=undefined;
+      this.category2Id=undefined;
+      this.category3Id=undefined;
+      
+      
     }
   }
   // watch: {

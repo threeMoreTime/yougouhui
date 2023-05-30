@@ -51,21 +51,7 @@ export default {
   computed: {
     ...mapGetters(['trademarkList', 'attrsList'])
   },
-  watch: {
-    //监听bannerList的数据变化 从空数组变成四个数据
-    trademarkList: {
-      handler(newValue, oldValue) {
-        //nextTick在v-for循环完后再渲染数据上去
-        this.$nextTick(() => {
-          console.log('trademarkList', this.trademarkList);
-          console.log('attrsList', this.attrsList);
-        })
-
-      }
-
-    }
-
-  },
+  
 }
 </script>
 
