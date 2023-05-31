@@ -14,11 +14,14 @@ Vue.component(Carousel.name, Carousel);
 Vue.use(router);
 // 引入mockServe.js---mock数据
 import "@/mock/mockServe";
-
 Vue.config.productionTip = false;
 // 注册路由信息 使组件身上都具有$router和$route属性
 new Vue({
   render: (h) => h(App),
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  },
   router,
   store,
+  // 添加全局组件通信
 }).$mount("#app");

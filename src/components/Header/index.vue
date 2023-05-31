@@ -56,7 +56,10 @@ export default {
 			const params = { keyword: this.keyword || undefined };
 			const query = this.$route.query;
 			this.$router.push({ name: 'search', params, query });
-		}
+			console.log(this.keyword);
+
+		},
+
 		// goSearch() {
 		//   const currentRoute = this.$router.currentRoute;
 		//   if (currentRoute.name === "search" && currentRoute.params.keyword === this.keyword&&currentRoute.query.K === this.keyword.toUpperCase()) {
@@ -65,7 +68,15 @@ export default {
 		//   this.$router.push({ name: "search", params: { keyword: this.keyword }, query: { K: this.keyword.toUpperCase() } });
 		// }
 
-	}
+	},
+	mounted() {
+		// 通过全局事件通信清楚搜索栏中的params参数
+		this.$bus.$on('clear', () => {
+			console.log('11111');
+			this.keyword = '';
+		})
+	},
+
 }
 </script>
 

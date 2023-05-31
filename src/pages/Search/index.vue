@@ -15,7 +15,11 @@
             <li v-if="params.categoryName" class="with-x">
               {{ params.categoryName }}
               <i @click="RemoveCategoryName">x</i>
-              </li>
+            </li>
+            <li v-if="params.keyword" class="with-x">
+              {{ params.keyword }}
+              <i @click="Removekeyword">x</i>
+            </li>
 
           </ul>
         </div>
@@ -140,15 +144,15 @@ export default {
   components: {
     SearchSelector
   },
-  beforeMount(){
+  beforeMount() {
     //合并参数发送请求
-    Object.assign(this.params,this.$route.query,this.$route.params)
+    Object.assign(this.params, this.$route.query, this.$route.params)
   },
   mounted() {
     this.getlist();
   },
   methods: {
- 
+
     getlist() {
       reqgoodslist(this.params).then((res) => {
         this.result = res.data;
@@ -156,28 +160,36 @@ export default {
         // this.$store.dispatch('getsearchlist', {})
       })
     },
-    RemoveCategoryName(){
-      this.params.categoryName=undefined;
-      this.categoryName=undefined;
-      this.category1Id=undefined;
-      this.category2Id=undefined;
-      this.category3Id=undefined;
-      this.$router.push('./search')
+    RemoveCategoryName() {
+      this.params.categoryName = undefined;
+      this.categoryName = undefined;
+      this.category1Id = undefined;
+      this.category2Id = undefined;
+      this.category3Id = undefined;
       this.getlist();
-      
+      if (this.$route.params) {
+        this.$router.push({ name: 'search', params: this.$route.params })
+      }
+    },
+    Removekeyword() {
+      this.params.keyword = undefined;
+      this.getlist();
+      this.$bus.$emit("clear");
+      if (this.$route.query) {
+        this.$router.push({ name: 'search', query: this.$route.query })
+      }
+
     }
   },
-  watch:{
+  watch: {
     // 监听路由信息，有变化则重新发送请求并改变请求参数
-    $route(newValue,oldValue){
-      Object.assign(this.params,this.$route.query,this.$route.params)
+    $route(newValue, oldValue) {
+      Object.assign(this.params, this.$route.query, this.$route.params)
       this.getlist();
       // 重置分类id 接收下次新的分类id
-      this.category1Id=undefined;
-      this.category2Id=undefined;
-      this.category3Id=undefined;
-      
-      
+      this.category1Id = undefined;
+      this.category2Id = undefined;
+      this.category3Id = undefined;
     }
   }
   // watch: {
