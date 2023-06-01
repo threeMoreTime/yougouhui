@@ -4,8 +4,8 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="item in trademarkList" :key="item.tmId">
-            {{ item.tmName }}
+          <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="trademarkinfo(trademark)">
+            {{ trademark.tmName }}
           </li>
           <li><img src="./images/phone06.png" /></li>
           <li><img src="./images/phone07.png" /></li>
@@ -50,6 +50,12 @@ export default {
   },
   computed: {
     ...mapGetters(['trademarkList', 'attrsList'])
+  },
+  methods: {
+    // 点击品牌后，将品牌信息传递给父组件（子传父组件）（父传子用props）
+    trademarkinfo(trademark){
+      this.$emit('gettrademark',trademark)
+    }
   },
   
 }

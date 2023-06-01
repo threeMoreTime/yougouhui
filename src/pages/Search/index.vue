@@ -20,12 +20,15 @@
               {{ params.keyword }}
               <i @click="Removekeyword">x</i>
             </li>
-
+            <li v-if="params.trademark" class="with-x">
+              {{ params.trademark.split(':')[1]}}
+              <i @click="Removetrademark">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @gettrademark="gettrademark"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -174,11 +177,24 @@ export default {
     Removekeyword() {
       this.params.keyword = undefined;
       this.getlist();
+      // 通知兄弟组件header清除搜索栏中的文字
       this.$bus.$emit("clear");
       if (this.$route.query) {
         this.$router.push({ name: 'search', query: this.$route.query })
       }
 
+    },
+    // 自定义数据 获取品牌信息
+    gettrademark(trademark){
+      console.log('trademark',trademark);
+      // 绑定trademark参数
+      this.params.trademark=`${trademark.tmId}:${trademark.tmName}`;
+      this.getlist()
+    },
+    //清除trademark参数重新发请求
+    Removetrademark(){
+      this.params.trademark = undefined;
+      this.getlist();
     }
   },
   watch: {
