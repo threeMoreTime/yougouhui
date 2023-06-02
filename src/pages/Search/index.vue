@@ -12,23 +12,31 @@
           </ul>
           <ul class="fl sui-tag">
             <!-- 面包屑数据 -->
+            <!-- 商品名称 -->
             <li v-if="params.categoryName" class="with-x">
               {{ params.categoryName }}
               <i @click="RemoveCategoryName">x</i>
             </li>
+            <!-- 关键字名称 -->
             <li v-if="params.keyword" class="with-x">
               {{ params.keyword }}
               <i @click="Removekeyword">x</i>
             </li>
+            <!-- 图片信息名称 -->
             <li v-if="params.trademark" class="with-x">
-              {{ params.trademark.split(':')[1]}}
+              {{ params.trademark.split(':')[1] }}
               <i @click="Removetrademark">x</i>
+            </li>
+            <!-- 商品售卖信息 -->
+            <li v-for="(attrValue,index) in params.props" :key="index" class="with-x">
+             <span v-if="attrValue">{{ attrValue.split(":")[1] }}</span> 
+              <i @click="RemoveattrValue">x</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @gettrademark="gettrademark"/>
+        <SearchSelector @arrtInfo="arrtInfo" @gettrademark="gettrademark" />
 
         <!--details-->
         <div class="details clearfix">
@@ -136,12 +144,12 @@ export default {
         categoryName: "",
         keyword: "",
         order: "",
-        pageNo: 1,
-        pageSize: 10,
-        props: [],
+        pageNo:1,
+        pageSize:10,
+        props:[],
         trademark: ""
 
-      }
+      },
     }
   },
   components: {
@@ -174,6 +182,7 @@ export default {
         this.$router.push({ name: 'search', params: this.$route.params })
       }
     },
+    // 删除搜索栏关键字
     Removekeyword() {
       this.params.keyword = undefined;
       this.getlist();
@@ -182,18 +191,28 @@ export default {
       if (this.$route.query) {
         this.$router.push({ name: 'search', query: this.$route.query })
       }
-
     },
     // 自定义数据 获取品牌信息
-    gettrademark(trademark){
-      console.log('trademark',trademark);
+    gettrademark(trademark) {
       // 绑定trademark参数
-      this.params.trademark=`${trademark.tmId}:${trademark.tmName}`;
+      this.params.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getlist()
     },
     //清除trademark参数重新发请求
-    Removetrademark(){
+    Removetrademark() {
       this.params.trademark = undefined;
+      this.getlist();
+    },
+    // 自定义事件获取平台售卖信息
+    arrtInfo(attrs, attrValue) {
+      this.params.props.splice(0, this.params.props.length, arr);
+      let arr = `${attrs.attrId}:${attrValue}:${attrs.attrName}`;
+      this.params.props.push(arr);
+      this.getlist();
+    },
+    // 删除attrValue数据面包屑
+    RemoveattrValue(){
+      this.params.props=[];
       this.getlist();
     }
   },

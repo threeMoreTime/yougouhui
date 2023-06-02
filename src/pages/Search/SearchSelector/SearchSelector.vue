@@ -4,22 +4,10 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
+          <!-- 商品图片信息 -->
           <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="trademarkinfo(trademark)">
             {{ trademark.tmName }}
           </li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone08.png" /></li>
-          <li><img src="./images/phone09.png" /></li>
-          <li><img src="./images/phone10.png" /></li>
-          <li><img src="./images/phone11.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone14.png" /></li>
-          <li><img src="./images/phone01.png" /></li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone02.png" /></li>
         </ul>
       </div>
       <div class="ext">
@@ -27,12 +15,13 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <div class="type-wrap" v-for="item in attrsList " :key="item.attrId">
-      <div class="fl key">{{item.attrName}}</div>
+    <!-- 品牌详细信息 -->
+    <div class="type-wrap" v-for="attrs in attrsList " :key="attrs.attrId">
+      <div class="fl key">{{ attrs.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(item ,index) in item.attrValueList" :key="index">
-            <a>{{item}}</a>
+          <li @click="getarrtinfo(attrs, attrValue)" v-for="(attrValue, index) in attrs.attrValueList" :key="index">
+            <a>{{ attrValue }}</a>
           </li>
         </ul>
       </div>
@@ -53,11 +42,14 @@ export default {
   },
   methods: {
     // 点击品牌后，将品牌信息传递给父组件（子传父组件）（父传子用props）
-    trademarkinfo(trademark){
-      this.$emit('gettrademark',trademark)
+    trademarkinfo(trademark) {
+      this.$emit('gettrademark', trademark)
+    },
+    getarrtinfo(attrs, attrValue) {
+      this.$emit("arrtInfo", attrs, attrValue)
     }
   },
-  
+
 }
 </script>
 
