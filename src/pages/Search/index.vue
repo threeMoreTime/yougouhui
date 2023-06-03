@@ -28,8 +28,8 @@
               <i @click="Removetrademark">x</i>
             </li>
             <!-- 商品售卖信息 -->
-            <li v-for="(attrValue,index) in params.props" :key="index" class="with-x">
-             <span v-if="attrValue">{{ attrValue.split(":")[1] }}</span> 
+            <li v-for="(attrValue, index) in params.props" :key="index" class="with-x">
+              <span v-if="attrValue">{{ attrValue.split(":")[1] }}</span>
               <i @click="RemoveattrValue">x</i>
             </li>
           </ul>
@@ -131,7 +131,7 @@
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
 import { reqgoodslist } from "@/api";
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 export default {
   name: 'Search',
   data() {
@@ -144,9 +144,9 @@ export default {
         categoryName: "",
         keyword: "",
         order: "",
-        pageNo:1,
-        pageSize:10,
-        props:[],
+        pageNo: 1,
+        pageSize: 10,
+        props: [],
         trademark: ""
 
       },
@@ -205,14 +205,19 @@ export default {
     },
     // 自定义事件获取平台售卖信息
     arrtInfo(attrs, attrValue) {
-      this.params.props.splice(0, this.params.props.length, arr);
       let arr = `${attrs.attrId}:${attrValue}:${attrs.attrName}`;
-      this.params.props.push(arr);
-      this.getlist();
+      this.params.props.splice(0, this.params.props.length, arr);
+      
+      if (this.params.props.includes(arr)) {
+        this.getlist();
+      } else {
+        this.params.props.push(arr);
+        this.getlist();
+      }
     },
     // 删除attrValue数据面包屑
-    RemoveattrValue(){
-      this.params.props=[];
+    RemoveattrValue() {
+      // this.params.props;
       this.getlist();
     }
   },
