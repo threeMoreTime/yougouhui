@@ -43,12 +43,12 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{ active: RankOne }" @click="onOne">
+                <li :class="{ active: RankOne }" @click="changeOrder('1')">
                   <a >综合<span class="iconfont"
                       :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
                       v-show="RankOne"></span></a>
                 </li>
-                <li :class="{ active: RankTwo }" @click="onTwo">
+                <li :class="{ active: RankTwo }" @click="changeOrder('2')">
                   <a >价格<span class="iconfont"
                       :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
                       v-show="RankTwo"></span></a>
@@ -136,7 +136,7 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "2:desc",
+        order: "1:desc",
         pageNo: 1,
         pageSize: 10,
         props: [],
@@ -210,29 +210,32 @@ export default {
     },
     // 删除attrValue数据面包屑
     RemoveattrValue() {
-      this.params.props[0] = null;
+      // this.params.props[0] = '';
+      this.params.props.splice(0,this.params.props.length);
       this.getlist();
     },
-    // 点击综合按钮激活active
-    onOne(){
-      if(this.params.order=''){
-        this.params.order = '1:asc'
-        this.getlist();
-      }else{
-        this.params.order = '1:desc'
-        this.getlist();
-      }
+    // 点击切换排序方式 num控形参控制是综合还是价格
+    changeOrder(num){
+     let oldOrder = this.params.order;
+    //  ordertype控制综合还是价格
+     let ordertype = this.params.order.split(':')[0];
+    //  ordertype控制排序方式
+     let orderRank = this.params.order.split(':')[1];
+    //  
+    let neworder = '';
+    //  默认点击是综合
+     if(num==ordertype){
+      // 根据传入的参数来修改num和type参数
+      neworder = `${ordertype}:${orderRank=='desc'?'asc':'desc'}`
+     }else{
+      // 点击商品
+      neworder = `${2}:${'desc'}`
+      console.log(num,ordertype);
+     }
+     this.params.order=neworder;
+     this.getlist();
      
     },
-    onTwo(){
-      if(this.params.order=''){
-        this.params.order = '2:asc'
-        this.getlist();
-      }else{
-        this.params.order = '2:desc'
-        this.getlist();
-      }
-    }
   },
   watch: {
     // 监听路由信息，有变化则重新发送请求并改变请求参数
