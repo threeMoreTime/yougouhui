@@ -216,7 +216,7 @@ export default {
     },
     // 点击切换排序方式 num控形参控制是综合还是价格
     changeOrder(num){
-     let oldOrder = this.params.order;
+    //  let oldOrder = this.params.order;
     //  ordertype控制综合还是价格
      let ordertype = this.params.order.split(':')[0];
     //  ordertype控制排序方式
@@ -227,10 +227,11 @@ export default {
      if(num==ordertype){
       // 根据传入的参数来修改num和type参数
       neworder = `${ordertype}:${orderRank=='desc'?'asc':'desc'}`
+      console.log(neworder);
      }else{
       // 点击商品
-      neworder = `${2}:${'desc'}`
-      console.log(num,ordertype);
+      neworder = `${num}:${'desc'}`
+      console.log(neworder);
      }
      this.params.order=neworder;
      this.getlist();
