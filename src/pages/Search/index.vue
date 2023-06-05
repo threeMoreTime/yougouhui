@@ -43,24 +43,17 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: RankOne }" @click="onOne">
+                  <a >综合<span class="iconfont"
+                      :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
+                      v-show="RankOne"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
+                <li :class="{ active: RankTwo }" @click="onTwo">
+                  <a >价格<span class="iconfont"
+                      :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
+                      v-show="RankTwo"></span></a>
                 </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
-                </li>
+
               </ul>
             </div>
           </div>
@@ -143,7 +136,7 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        order: "2:desc",
         pageNo: 1,
         pageSize: 10,
         props: [],
@@ -207,7 +200,7 @@ export default {
     arrtInfo(attrs, attrValue) {
       let arr = `${attrs.attrId}:${attrValue}:${attrs.attrName}`;
       this.params.props.splice(0, this.params.props.length, arr);
-      
+
       if (this.params.props.includes(arr)) {
         this.getlist();
       } else {
@@ -217,8 +210,28 @@ export default {
     },
     // 删除attrValue数据面包屑
     RemoveattrValue() {
-      // this.params.props;
+      this.params.props[0] = null;
       this.getlist();
+    },
+    // 点击综合按钮激活active
+    onOne(){
+      if(this.params.order=''){
+        this.params.order = '1:asc'
+        this.getlist();
+      }else{
+        this.params.order = '1:desc'
+        this.getlist();
+      }
+     
+    },
+    onTwo(){
+      if(this.params.order=''){
+        this.params.order = '2:asc'
+        this.getlist();
+      }else{
+        this.params.order = '2:desc'
+        this.getlist();
+      }
     }
   },
   watch: {
@@ -231,7 +244,21 @@ export default {
       this.category2Id = undefined;
       this.category3Id = undefined;
     }
-  }
+  },
+  computed: {
+    RankOne() {
+      return this.params.order.indexOf('1') != -1;
+    },
+    RankTwo() {
+      return this.params.order.indexOf('2') != -1;
+    },
+    RankAsc() {
+      return this.params.order.indexOf('asc') != -1
+    },
+    RankDesc() {
+      return this.params.order.indexOf('desc') != -1
+    }
+  },
   // watch: {
   //   //监听bannerList的数据变化 从空数组变成四个数据
   //   goodsList: {
