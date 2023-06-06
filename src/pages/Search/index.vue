@@ -44,13 +44,11 @@
             <div class="navbar-inner filter">
               <ul class="sui-nav">
                 <li :class="{ active: RankOne }" @click="changeOrder('1')">
-                  <a >综合<span class="iconfont"
-                      :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
+                  <a>综合<span class="iconfont" :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
                       v-show="RankOne"></span></a>
                 </li>
                 <li :class="{ active: RankTwo }" @click="changeOrder('2')">
-                  <a >价格<span class="iconfont"
-                      :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
+                  <a>价格<span class="iconfont" :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
                       v-show="RankTwo"></span></a>
                 </li>
 
@@ -87,7 +85,7 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination/>
+          <Pagination />
         </div>
       </div>
     </div>
@@ -186,32 +184,28 @@ export default {
     // 删除attrValue数据面包屑
     RemoveattrValue() {
       // this.params.props[0] = '';
-      this.params.props.splice(0,this.params.props.length);
+      this.params.props.splice(0, this.params.props.length);
       this.getlist();
     },
-    // 点击切换排序方式 num控形参控制是综合还是价格
-    changeOrder(num){
-    //  let oldOrder = this.params.order;
-    //  ordertype控制综合还是价格
-     let ordertype = this.params.order.split(':')[0];
-    //  ordertype控制排序方式
-     let orderRank = this.params.order.split(':')[1];
-    //  
-    let neworder = '';
-    //  默认点击是综合
-     if(num==ordertype){
-      // 根据传入的参数来修改num和type参数
-      neworder = `${ordertype}:${orderRank=='desc'?'asc':'desc'}`
-      console.log(neworder);
-     }else{
-      // 点击商品
-      neworder = `${num}:${'desc'}`
-      console.log(neworder);
-     }
-     this.params.order=neworder;
-     this.getlist();
-     
-    },
+    changeOrder(number) {
+      // 给Rankname第一个参数，表示是什么排序 综合还是价格排序 split根据:来切割数据
+      let Rankname = this.params.order.split(':')[0];
+      // 给Rankname第二个参数，表示是降序还是升序排序 split根据:来切割数据
+      let RankType = this.params.order.split(':')[1];
+      // 创建一个中间值
+      let arr = '';
+      // 如果传参等于number 则修改排序方式（升序，降序） 不然修改排序名称（综合，价格）
+      if (number == Rankname) {
+        arr = `${Rankname}:${RankType == 'desc' ? 'asc' : 'desc'}`
+
+      } else {
+        arr = `${number}:${'desc'}`
+      }
+      this.params.order = arr;
+      this.getlist();
+
+
+    }
   },
   watch: {
     // 监听路由信息，有变化则重新发送请求并改变请求参数
