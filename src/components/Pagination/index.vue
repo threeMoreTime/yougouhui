@@ -26,12 +26,13 @@
 <script>
 export default {
     name: "Pagination",
-    // 四个参数 pageNo（当前页号）,pageSize（一页的数据多少条），toTal（一共多少条数据），continues（连续页码为5）
-    props: ['continues', 'pageSize', 'pageNo', 'total'],
+    // 四个参数 pageNo（当前页号）,pageSize（一页的数据多少条），
+    // toTal（一共多少条数据），continues（连续页码为5）
+    props: ['continues', 'pageSize', 'pageNo', 'toTal'],
     computed: {
         // 计算总页数 向上取整
         totalPages() {
-            return Math.ceil(this.total / this.pageSize);
+            return Math.ceil(this.toTal / this.pageSize);
         },
         // 计算前后页数 
         SandEpages() {
@@ -46,8 +47,19 @@ export default {
                 end = totalPages;
             } else {
                 // 正常情况下，总页码大于连续页码
+                // 开始页码等于当前页码减去连续页码除二向上取整
+                // 结束页码等于当前页码加上连续页码除二向上取整
                 start = pageNo - parseInt(continues / 2);
                 end = pageNo + parseInt(continues / 2);
+                // 如果开始页码小于1,结束页码等于连续页码
+                if (start<1) {
+                    start=1;
+                    end = continues;
+                }
+                if (end>totalPages) {
+                    start =  start = pageNo - parseInt(continues / 2);
+                    end=totalPages;
+                }
             }
 
             return { start, end };
