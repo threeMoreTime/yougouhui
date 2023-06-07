@@ -14,21 +14,52 @@
 
         <button>8</button>
         <button>9</button>
-        <button>...</button>
+        <!-- 总页数  -->
+        <button>{{ totalPages }}</button>
         <button>上一页</button>
+        <!-- 总页数 -->
+        <button style="margin-left: 30px">{{ continues }}</button>
+        <h1>{{ SandEpages.start }} - {{ SandEpages.end }}</h1>
 
-        <button style="margin-left: 30px">共 60 条</button>
     </div>
 </template>
 <script>
 export default {
     name: "Pagination",
+    // 四个参数 pageNo（当前页号）,pageSize（一页的数据多少条），toTal（一共多少条数据），continues（连续页码为5）
+    props: ['continues', 'pageSize', 'pageNo', 'total'],
+    computed: {
+        // 计算总页数 向上取整
+        totalPages() {
+            return Math.ceil(this.total / this.pageSize);
+        },
+        // 计算前后页数 
+        SandEpages() {
+            // 解构赋值，不需要写this
+            const { continues, pageNo, totalPages } = this;
+            // 起始状态
+            let start = 0, end = 0;
+
+            // 如果连续页码大于当前总页数
+            if (continues > totalPages) {
+                start = 1;
+                end = totalPages;
+            } else {
+                // 正常情况下，总页码大于连续页码
+                start = pageNo - parseInt(continues / 2);
+                end = pageNo + parseInt(continues / 2);
+            }
+
+            return { start, end };
+        }
+    }
 }
 </script>
-<style lang="less" scoped>
 
+<style lang="less" scoped>
 .pagination {
     text-align: center;
+
     button {
         margin: 0 5px;
         background-color: #f4f4f5;

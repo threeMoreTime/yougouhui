@@ -85,7 +85,9 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination />
+          <!-- 四个参数 pageNo（当前页号）,pagesize（一页的数据多少条）
+          ,toal(一共多少条数据) continues(连续页码)-->
+          <Pagination :continues="5" :  ="5" :pageNo="100" :toTal="500" />
         </div>
       </div>
     </div>
