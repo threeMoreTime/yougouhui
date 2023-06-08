@@ -4,10 +4,16 @@
         <button :disabled="pageNo == 1" @click="$emit('getpageinfo', pageNo - 1)">上一页</button>
         <!-- 当起始页码大于1时 -->
         <button v-show="SandEpages.start > 1" @click="$emit('getpageinfo', pageNo = 1)">1</button>
+        
+        
+        <!-- 中间部分 -->
         <!-- 当起始页码大于2时 -->
         <button v-show="SandEpages.start > 2">...</button>
         <button v-for="(item, index) in SandEpages.end" :key="index" v-show="item >= SandEpages.start"
-            @click="$emit('getpageinfo', pageNo = item)">{{ item }}</button>
+            @click="$emit('getpageinfo', num = item)">{{ item }}</button>
+       
+       
+       
         <!-- 当结束页码小于总页码减一时 -->
         <button v-show="SandEpages.end < totalPages - 1">...</button>
         <!-- 当结束页码小于总页码时 -->

@@ -89,7 +89,7 @@
           ,toal(一共多少条数据) continues(连续页码)-->
           <Pagination @getpageinfo="getpageinfo" :continues="5" :pageSize="this.params.pageSize"
             :pageNo="this.params.pageNo" :toTal="Number(this.result.total)" />
-          <!-- <h1 v-if="this.result.toTal">{{ this.result.toTal }}</h1> -->
+         
         </div>
       </div>
     </div>
@@ -113,8 +113,8 @@ export default {
         categoryName: "",
         keyword: "",
         order: "1:desc",
-        pageNo: 48,
-        pageSize: 1,
+        pageNo: 1,
+        pageSize: 3,
         props: [],
         trademark: "",
 
@@ -209,7 +209,9 @@ export default {
     },
     // 传递分页器组件传递pageNO参数到search组件  自定义事件 子传父
     getpageinfo(pageNo) {
-      console.log(pageNo);
+      // 整理页码参数 合并请求参数 发送请求
+       this.params.pageNo = pageNo;
+      this.getlist();
     }
   },
   watch: {
