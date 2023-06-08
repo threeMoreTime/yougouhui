@@ -87,7 +87,9 @@
           <!-- 分页器 -->
           <!-- 四个参数 pageNo（当前页号）,pagesize（一页的数据多少条）
           ,toal(一共多少条数据) continues(连续页码)-->
-          <Pagination :continues="5" :pageSize="5" :pageNo="7" :toTal="500" />
+          <Pagination @getpageinfo="getpageinfo" :continues="5" :pageSize="this.params.pageSize"
+            :pageNo="this.params.pageNo" :toTal="Number(this.result.total)" />
+          <!-- <h1 v-if="this.result.toTal">{{ this.result.toTal }}</h1> -->
         </div>
       </div>
     </div>
@@ -95,6 +97,7 @@
 </template>
 
 <script>
+
 import SearchSelector from './SearchSelector/SearchSelector'
 import { reqgoodslist } from "@/api";
 // import { mapGetters } from 'vuex';
@@ -110,10 +113,10 @@ export default {
         categoryName: "",
         keyword: "",
         order: "1:desc",
-        pageNo: 1,
-        pageSize: 10,
+        pageNo: 48,
+        pageSize: 1,
         props: [],
-        trademark: ""
+        trademark: "",
 
       },
     }
@@ -129,13 +132,11 @@ export default {
     this.getlist();
   },
   methods: {
-
     // 发请求
     getlist() {
       reqgoodslist(this.params).then((res) => {
         this.result = res.data;
-        // 派发cation给仓库
-        // this.$store.dispatch('getsearchlist', {})
+        console.log(this.result);
       })
     },
     // 删除面包屑商品数据
@@ -205,8 +206,10 @@ export default {
       }
       this.params.order = arr;
       this.getlist();
-
-
+    },
+    // 传递分页器组件传递pageNO参数到search组件  自定义事件 子传父
+    getpageinfo(pageNo) {
+      console.log(pageNo);
     }
   },
   watch: {
@@ -234,6 +237,7 @@ export default {
       return this.params.order.indexOf('desc') != -1
     }
   },
+
   // watch: {
   //   //监听bannerList的数据变化 从空数组变成四个数据
   //   goodsList: {
