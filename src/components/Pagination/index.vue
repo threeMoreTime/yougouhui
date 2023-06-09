@@ -3,25 +3,27 @@
     <div class="pagination">
         <button :disabled="pageNo == 1" @click="$emit('getpageinfo', pageNo - 1)">上一页</button>
         <!-- 当起始页码大于1时 -->
-        <button v-show="SandEpages.start > 1" @click="$emit('getpageinfo', pageNo = 1)">1</button>
-        
-        
+        <button v-show="SandEpages.start > 1" @click="$emit('getpageinfo', pageNo = 1)"
+            :class="{ active: pageNo == 1 }">1</button>
+
+
         <!-- 中间部分 -->
         <!-- 当起始页码大于2时 -->
         <button v-show="SandEpages.start > 2">...</button>
         <button v-for="(item, index) in SandEpages.end" :key="index" v-show="item >= SandEpages.start"
-            @click="$emit('getpageinfo', num = item)">{{ item }}</button>
-       
-       
-       
+            @click="$emit('getpageinfo', num = item)" :class="{ active: pageNo == item }">{{ item }}</button>
+
+
+
         <!-- 当结束页码小于总页码减一时 -->
         <button v-show="SandEpages.end < totalPages - 1">...</button>
         <!-- 当结束页码小于总页码时 -->
-        <button v-show="SandEpages.end < totalPages" @click="$emit('getpageinfo', totalPages)">{{ totalPages }}</button>
+        <button v-show="SandEpages.end < totalPages" @click="$emit('getpageinfo', totalPages)"
+            :class="{ active: pageNo == totalPages }">{{ totalPages }}</button>
         <button :disabled="pageNo == SandEpages.end" @click="$emit('getpageinfo', pageNo + 1)">下一页</button>
         <!-- 总页数 -->
         <button @click="$emit('getpageinfo', totalPages)" style="margin-left: 30px">{{ totalPages }}</button>
-        <h1>{{ SandEpages.start }} - {{ SandEpages.end }}</h1>
+
     </div>
 </template>
 <script>
@@ -91,6 +93,7 @@ export default {
 
 <style lang="less" scoped>
 .pagination {
+
     text-align: center;
 
     button {
