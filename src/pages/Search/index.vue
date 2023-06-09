@@ -24,7 +24,7 @@
             </li>
             <!-- 图片信息名称 -->
             <li v-if="params.trademark" class="with-x">
-              {{ params.trademark.split(':')[1] }}
+              {{ params.trademark.split(":")[1] }}
               <i @click="Removetrademark">x</i>
             </li>
             <!-- 商品售卖信息 -->
@@ -44,25 +44,41 @@
             <div class="navbar-inner filter">
               <ul class="sui-nav">
                 <li :class="{ active: RankOne }" @click="changeOrder('1')">
-                  <a>综合<span class="iconfont" :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
-                      v-show="RankOne"></span></a>
+                  <a
+                    >综合<span
+                      class="iconfont"
+                      :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
+                      v-show="RankOne"
+                    ></span
+                  ></a>
                 </li>
                 <li :class="{ active: RankTwo }" @click="changeOrder('2')">
-                  <a>价格<span class="iconfont" :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
-                      v-show="RankTwo"></span></a>
+                  <a
+                    >价格<span
+                      class="iconfont"
+                      :class="{ 'icon-jiangxu': RankDesc, 'icon-shengxu1': RankAsc }"
+                      v-show="RankTwo"
+                    ></span
+                  ></a>
                 </li>
-
               </ul>
             </div>
           </div>
           <!-- 商品列表数据 -->
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" target="_blank" v-for="goods in result.goodsList" :key="goods.id">
+              <li
+                class="yui3-u-1-5"
+                target="_blank"
+                v-for="goods in result.goodsList"
+                :key="goods.id"
+              >
                 <div class="list-wrap">
                   <!-- 图片数据 -->
                   <div class="p-img">
-                    <a href="item.html"><img :src="goods.defaultImg" /></a>
+                    <router-link :to="`/Detail/${goods.id}`">
+                      <img :src="goods.defaultImg" />
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -77,7 +93,12 @@
                     <i class="command">已有<span>2000</span>人评价</i>
                   </div>
                   <div class="operate">
-                    <a href="success-cart.html" target="_blank" class="sui-btn btn-bordered btn-danger">加入购物车</a>
+                    <a
+                      href="success-cart.html"
+                      target="_blank"
+                      class="sui-btn btn-bordered btn-danger"
+                      >加入购物车</a
+                    >
                     <a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
                   </div>
                 </div>
@@ -87,9 +108,13 @@
           <!-- 分页器 -->
           <!-- 四个参数 pageNo（当前页号）,pagesize（一页的数据多少条）
           ,toal(一共多少条数据) continues(连续页码)-->
-          <Pagination @getpageinfo="getpageinfo" :continues="5" :pageSize="this.params.pageSize"
-            :pageNo="this.params.pageNo" :toTal="Number(this.result.total)" />
-
+          <Pagination
+            @getpageinfo="getpageinfo"
+            :continues="5"
+            :pageSize="this.params.pageSize"
+            :pageNo="this.params.pageNo"
+            :toTal="Number(this.result.total)"
+          />
         </div>
       </div>
     </div>
@@ -97,12 +122,11 @@
 </template>
 
 <script>
-
-import SearchSelector from './SearchSelector/SearchSelector'
+import SearchSelector from "./SearchSelector/SearchSelector";
 import { reqgoodslist } from "@/api";
 // import { mapGetters } from 'vuex';
 export default {
-  name: 'Search',
+  name: "Search",
   data() {
     return {
       result: [],
@@ -117,16 +141,15 @@ export default {
         pageSize: 3,
         props: [],
         trademark: "",
-
       },
-    }
+    };
   },
   components: {
-    SearchSelector
+    SearchSelector,
   },
   beforeMount() {
     //合并参数发送请求
-    Object.assign(this.params, this.$route.query, this.$route.params)
+    Object.assign(this.params, this.$route.query, this.$route.params);
   },
   mounted() {
     this.getlist();
@@ -136,8 +159,7 @@ export default {
     getlist() {
       reqgoodslist(this.params).then((res) => {
         this.result = res.data;
-        console.log(this.result);
-      })
+      });
     },
     // 删除面包屑商品数据
     RemoveCategoryName() {
@@ -148,7 +170,7 @@ export default {
       this.category3Id = undefined;
       this.getlist();
       if (this.$route.params) {
-        this.$router.push({ name: 'search', params: this.$route.params })
+        this.$router.push({ name: "search", params: this.$route.params });
       }
     },
     // 删除搜索栏关键字
@@ -158,14 +180,14 @@ export default {
       // 通知兄弟组件header清除搜索栏中的文字
       this.$bus.$emit("clear");
       if (this.$route.query) {
-        this.$router.push({ name: 'search', query: this.$route.query })
+        this.$router.push({ name: "search", query: this.$route.query });
       }
     },
     // 自定义数据 获取品牌信息
     gettrademark(trademark) {
       // 绑定trademark参数
       this.params.trademark = `${trademark.tmId}:${trademark.tmName}`;
-      this.getlist()
+      this.getlist();
     },
     //清除trademark参数重新发请求
     Removetrademark() {
@@ -192,17 +214,16 @@ export default {
     },
     changeOrder(number) {
       // 给Rankname第一个参数，表示是什么排序 综合还是价格排序 split根据:来切割数据
-      let Rankname = this.params.order.split(':')[0];
+      let Rankname = this.params.order.split(":")[0];
       // 给Rankname第二个参数，表示是降序还是升序排序 split根据:来切割数据
-      let RankType = this.params.order.split(':')[1];
+      let RankType = this.params.order.split(":")[1];
       // 创建一个中间值
-      let arr = '';
+      let arr = "";
       // 如果传参等于number 则修改排序方式（升序，降序） 不然修改排序名称（综合，价格）
       if (number == Rankname) {
-        arr = `${Rankname}:${RankType == 'desc' ? 'asc' : 'desc'}`
-
+        arr = `${Rankname}:${RankType == "desc" ? "asc" : "desc"}`;
       } else {
-        arr = `${number}:${'desc'}`
+        arr = `${number}:${"desc"}`;
       }
       this.params.order = arr;
       this.getlist();
@@ -212,32 +233,32 @@ export default {
       // 整理页码参数 合并请求参数 发送请求
       this.params.pageNo = pageNo;
       this.getlist();
-    }
+    },
   },
   watch: {
     // 监听路由信息，有变化则重新发送请求并改变请求参数
     $route(newValue, oldValue) {
-      Object.assign(this.params, this.$route.query, this.$route.params)
+      Object.assign(this.params, this.$route.query, this.$route.params);
       this.getlist();
       // 重置分类id 接收下次新的分类id
       this.category1Id = undefined;
       this.category2Id = undefined;
       this.category3Id = undefined;
-    }
+    },
   },
   computed: {
     RankOne() {
-      return this.params.order.indexOf('1') != -1;
+      return this.params.order.indexOf("1") != -1;
     },
     RankTwo() {
-      return this.params.order.indexOf('2') != -1;
+      return this.params.order.indexOf("2") != -1;
     },
     RankAsc() {
-      return this.params.order.indexOf('asc') != -1
+      return this.params.order.indexOf("asc") != -1;
     },
     RankDesc() {
-      return this.params.order.indexOf('desc') != -1
-    }
+      return this.params.order.indexOf("desc") != -1;
+    },
   },
 
   // watch: {
@@ -258,9 +279,7 @@ export default {
   //   // 获取search仓库的goodsList中数据
   //   ...mapGetters(['goodsList'])
   // }
-
-
-}
+};
 </script>
 
 <style lang="less" scoped>
