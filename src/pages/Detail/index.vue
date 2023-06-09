@@ -25,7 +25,7 @@
         <div class="InfoWrap">
           <div class="goodsDetail">
             <h3 class="InfoName">
-              Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机
+              {{ result.skuInfo.price }}
             </h3>
             <p class="news">
               推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返
@@ -35,7 +35,7 @@
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <i>¥</i>
-                  <em>5299</em>
+                  <em>{{ result.skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -133,7 +133,7 @@
               <li>
                 <div class="list-wrap">
                   <div class="p-img">
-                    <img src="./images/part01.png" />
+                    <img :src="result.skuInfo.skuDefaultImg" />
                   </div>
                   <div class="attr">Apple苹果iPhone 6s (A1699)</div>
                   <div class="price">
@@ -350,7 +350,7 @@ export default {
   data() {
     return {
       result: [],
-      sukId: "2",
+      skuId: "2",
     };
   },
   components: {
@@ -362,7 +362,7 @@ export default {
   },
   methods: {
     getdetailedInfo() {
-      detailedInfo(this.sukId).then((res) => {
+      detailedInfo(this.skuId).then((res) => {
         this.result = res.data;
         console.log(this.result);
       });
