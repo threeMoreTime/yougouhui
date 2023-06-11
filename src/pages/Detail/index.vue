@@ -7,10 +7,9 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span>手机、数码、通讯</span>
-        <span>手机</span>
-        <span>Apple苹果</span>
-        <span>iphone 6S系类</span>
+        <span>{{ categoryView.category1Name }}</span>
+        <span>{{ categoryView.category2Name }}</span>
+        <span>{{ categoryView.category3Name }}</span>
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
@@ -24,18 +23,16 @@
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
-            <h3 class="InfoName">
-              {{ result.skuInfo.price }}
-            </h3>
+            <h3 class="InfoName">{{ skuInfo.skuName }}</h3>
             <p class="news">
-              推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返
+              {{ skuInfo.skuDesc }}
             </p>
             <div class="priceArea">
               <div class="priceArea1">
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <i>¥</i>
-                  <em>{{ result.skuInfo.price }}</em>
+                  <em>{{ skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -132,9 +129,7 @@
             <ul class="goodsList">
               <li>
                 <div class="list-wrap">
-                  <div class="p-img">
-                    <img :src="result.skuInfo.skuDefaultImg" />
-                  </div>
+                  <div class="p-img"></div>
                   <div class="attr">Apple苹果iPhone 6s (A1699)</div>
                   <div class="price">
                     <em>¥</em>
@@ -343,14 +338,13 @@
 <script>
 import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
-import { detailedInfo } from "@/api/index";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
   data() {
     return {
       result: [],
-      skuId: "2",
     };
   },
   components: {
@@ -358,15 +352,12 @@ export default {
     Zoom,
   },
   mounted() {
-    this.getdetailedInfo();
+    // 派发action 获取商品信息
+    this.$store.dispatch("detailedInfo", this.$route.params.goodsId);
   },
-  methods: {
-    getdetailedInfo() {
-      detailedInfo(this.skuId).then((res) => {
-        this.result = res.data;
-        console.log(this.result);
-      });
-    },
+  methods: {},
+  computed: {
+    ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
 };
 </script>
