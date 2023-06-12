@@ -17,6 +17,10 @@ const actions = {
     let result = await detailedInfo(sukId);
     if (result.code == 200) {
       commit("DETAILINFO", result.data);
+      console.log(result);
+      
+      // console.log(result);
+      
     } else {
       console.log("请求错误");
     }
@@ -27,11 +31,13 @@ const getters = {
     // goodinfo初始是空对象 加上按位或判断 防止控制台报错
     return state.goodinfo.categoryView||{};
   },
+  // 售卖信息书简化
   skuInfo(state) {
     return state.goodinfo.skuInfo||{};
   },
+  // 售卖属性简化
   spuSaleAttrList(state) {
-    return state.goodinfo.spuSaleAttrList||{};
+    return state.goodinfo.spuSaleAttrList||[];
   },
 };
 
