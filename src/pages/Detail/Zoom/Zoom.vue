@@ -13,9 +13,20 @@
 export default {
   name: "Zoom",
   props: ["skuImageList"],
+  data() {
+    return {
+      indexValue: 0,
+    };
+  },
   computed: {
     objimg() {
-      return this.skuImageList[0] || {};
+      return this.skuImageList[this.indexValue] || {};
+    },
+    mounted() {
+      // 接收兄弟组件参数 修改大的轮播图
+      this.$bus.$on("getindex", (index) => {
+        this.indexValue = index;
+      });
     },
   },
 };

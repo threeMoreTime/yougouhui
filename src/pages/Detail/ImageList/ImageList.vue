@@ -1,8 +1,12 @@
 <template>
-  <div class="swiper-container">
+  <div class="swiper-container" ref="cur">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" v-for="item in imageList" :key="item.id">
-        <img :src="item.imgUrl" />
+      <div class="swiper-slide" v-for="(item, index) in skuImageList" :key="item.id">
+        <img
+          :class="{ active: itemindex == index }"
+          :src="item.imgUrl"
+          @click="changeindex(index)"
+        />
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -14,7 +18,41 @@
 import Swiper from "swiper";
 export default {
   name: "ImageList",
-  props: ["imageList"],
+  props: ["skuImageList"],
+  data() {
+    return {
+      itemindex: 0,
+    };
+  },
+  watch: {
+    skuImageList(oldValue, newValue) {
+      this.$nextTick(() => {
+        new Swiper(this.$refs.cur, {
+          // 如果需要分页器
+          pagination: {
+            el: ".swiper-pagination",
+          },
+
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+          // 每页三个数据
+          slidesPerView: 3,
+          // 每次切换一条数据
+          slidesPerGroup: 1,
+        });
+      });
+    },
+  },
+  methods: {
+    changeindex(index) {
+      this.itemindex = index;
+      // 通知兄弟组件修改数据
+      this.$bus.$emit("getindex", this.itemindex);
+    },
+  },
 };
 </script>
 
@@ -69,6 +107,7 @@ export default {
     border: 1px solid rgb(204, 204, 204);
     top: 0;
     margin-top: 0;
+
     &::after {
       font-size: 12px;
     }
