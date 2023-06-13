@@ -1,11 +1,14 @@
 <template>
   <div class="spec-preview">
+    <!-- 原图片 -->
     <img :src="objimg.imgUrl" />
-    <div class="event"></div>
+    <div class="event" @mousemove="magnifier"></div>
     <div class="big">
-      <img :src="objimg.imgUrl" />
+      <!-- 放大后的照片 -->
+      <img :src="objimg.imgUrl" ref="big" />
     </div>
-    <div class="mask"></div>
+    <!-- 遮罩层 -->
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -18,15 +21,37 @@ export default {
       indexValue: 0,
     };
   },
+  mounted() {
+    // 接收兄弟组件参数 修改大的轮播图
+    this.$bus.$on("getindex", (index) => {
+      this.indexValue = index;
+    });
+  },
   computed: {
     objimg() {
       return this.skuImageList[this.indexValue] || {};
     },
-    mounted() {
-      // 接收兄弟组件参数 修改大的轮播图
-      this.$bus.$on("getindex", (index) => {
-        this.indexValue = index;
-      });
+  },
+  methods: {
+    magnifier(event) {
+      // 获取遮罩层和放大后图片的对象
+      const { big, mask } = this.$refs;
+
+      // 计算遮罩层的左右和上下，大图片的长宽减去遮罩层一半的长宽
+      let Left = event.offsetX - mask.offsetWidth / 2;
+      let Top = event.offsetY - mask.offsetHeight / 2;
+
+      // 限制范围
+      Left = Left < 0 ? 0 : Left > mask.offsetWidth ? mask.offsetWidth : Left;
+      Top = Top < 0 ? 0 : Top > mask.offsetHeight ? mask.offsetHeight : Top;
+
+      // 设置遮罩层的位置
+      mask.style.left = `${Left}px`;
+      mask.style.top = `${Top}px`;
+
+      // 设置放大后图片的位置
+      big.style.left = `${-2 * Left}px`;
+      big.style.top = `${-2 * Top}px`;
     },
   },
 };
