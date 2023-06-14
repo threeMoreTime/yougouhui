@@ -84,9 +84,15 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  type="text"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
+                <a class="plus" @click="skuNum++">+</a>
+                <a class="mins" @click="skuNum <= 1 ? 1 : skuNum--">-</a>
               </div>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
@@ -335,6 +341,7 @@ export default {
   data() {
     return {
       result: [],
+      skuNum: 1,
     };
   },
   components: {
@@ -352,6 +359,27 @@ export default {
         ArrList.isChecked = 0;
       });
       ValueList.isChecked = 1;
+    },
+    // changeSkuNum(event) {
+    //   let num = event.target.value;
+    //   // 先判断类型 在判断是否为浮点类型是的话 向下取整
+    //   if (isNaN(num) || num < 1) {
+    //     this.skuNum = 1;
+    //   } else {
+    //     this.skuNum = parseInt(num);
+    //   }
+    //   console.log(num, this.skuNum);
+    // },
+    // 简化后的代码
+    changeSkuNum(event) {
+      // 从事件对象中获取输入字段的值
+      let num = parseFloat(event.target.value);
+
+      // 检查是否为 NaN 或小于 1，如果是则将 this.skuNum 设置为 1，否则将其设置为取整后的 num
+      this.skuNum = isNaN(num) || num < 1 ? 1 : Math.floor(num);
+
+      // 打印 num 和 this.skuNum 的值
+      console.log(num, this.skuNum);
     },
   },
   computed: {
