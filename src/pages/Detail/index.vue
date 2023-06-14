@@ -67,29 +67,19 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+              <dl v-for="(saleArr, index) in spuSaleAttrList" :key="saleArr.id">
+                <dt class="title">
+                  {{ saleArr.saleAttrName }}
+                </dt>
+                <dd
+                  changepirce="0"
+                  :class="{ active: ValueList.isChecked == 1 }"
+                  @click="comIndex(ValueList, saleArr.spuSaleAttrValueList)"
+                  v-for="(ValueList, index) in saleArr.spuSaleAttrValueList"
+                  :key="ValueList.id"
+                >
+                  {{ ValueList.saleAttrValueName }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -355,7 +345,15 @@ export default {
     // 派发action 获取商品信息
     this.$store.dispatch("detailedInfo", this.$route.params.goodsId);
   },
-  methods: {},
+  methods: {
+    // 排他操作  把售卖属性所有的isChecked设为零 只有点击的属性改为1（显示高亮）
+    comIndex(ValueList, ArrList) {
+      ArrList.forEach((ArrList) => {
+        ArrList.isChecked = 0;
+      });
+      ValueList.isChecked = 1;
+    },
+  },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
     // 给Zoom组件的数据 skuImageList
