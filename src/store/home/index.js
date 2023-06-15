@@ -63,7 +63,7 @@ const getters = {};
 
 export default {
   // 命名空间 上锁
-  namespaced:true, 
+  // namespaced:true, 
   state,
   mutations,
   actions,
