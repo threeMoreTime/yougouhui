@@ -3,7 +3,7 @@ import Search from '@/pages/Search';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Detail from '@/pages/Detail';
-
+import AddCartSuccess from '@/pages/AddCartSuccess';
 export default   [
     {
         // 路由路径
@@ -36,6 +36,12 @@ export default   [
         path: '/Register',
         component: Register,
         meta: { show: false }
+    },
+    {
+        path: '/AddCartSuccess',
+        component: AddCartSuccess,
+        meta: { show: true },
+        name:'addCartSuccess',
     },
     {
         // 默认跳转到首页

@@ -17,18 +17,16 @@ const actions = {
     let result = await detailedInfo(sukId);
     if (result.code == 200) {
       commit("DETAILINFO", result.data);
-      console.log(result);
     } else {
       console.log("请求错误");
     }
   },
   async addToCart({ commit },  {sukId, skuNum} ) {
-    console.log(sukId,skuNum);
-    let result = await addToCart(sukId, skuNum);
-    
-    
+    let result = await addToCart(sukId, skuNum);  
     if (result.code == 200) {
-      console.log("添加成功");
+      console.log("成功");
+    }else{
+      return Promise.reject(new error('faile'))
     }
   },
 };

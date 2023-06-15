@@ -374,18 +374,26 @@ export default {
     changeSkuNum(event) {
       // 从事件对象中获取输入字段的值
       let num = parseFloat(event.target.value);
-
       // 检查是否为 NaN 或小于 1，如果是则将 this.skuNum 设置为 1，否则将其设置为取整后的 num
       this.skuNum = isNaN(num) || num < 1 ? 1 : Math.floor(num);
-
-      // 打印 num 和 this.skuNum 的值
-      console.log(num, this.skuNum);
     },
-    addCart() {
-      this.$store.dispatch("addToCart", {
-        sukId: this.$route.params.goodsId,
-        skuNum: this.skuNum,
-      });
+    async addCart() {
+      try {
+        // 添加购物车成功进行路由跳转
+        await this.$store.dispatch("addToCart", {
+          sukId: this.$route.params.goodsId,
+          skuNum: this.skuNum,
+        });
+        // 简单参数 skuNum可以直接传递
+        this.$router.push({
+          path: "/AddCartSuccess",
+          query: { skuNum: this.skuNum },
+        });
+        // 复杂的对象类型可以通过会话存储和本地存储传递 但是要转成字符串形式
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
+      } catch (error) {
+        alert(error.message);
+      }
     },
   },
   computed: {
