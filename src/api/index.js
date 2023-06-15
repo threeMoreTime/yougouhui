@@ -17,3 +17,5 @@ export const reqphone = () => requests({ method: 'get', url: '/user/passport/sen
 export const reqgoodslist = (params)=>requests({method:'post',url:'/list',data:params})
 // 获取详细商品信息数据
 export const detailedInfo = (skuId ) => requests({method:'get',url:`/item/${skuId}`})
+// 添加购物车
+export const addToCart  = (sukId, skuNum) => requests({method:'post',url:`/cart/addToCart/${sukId}/${skuNum}`});

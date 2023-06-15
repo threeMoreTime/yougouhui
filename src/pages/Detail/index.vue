@@ -95,7 +95,7 @@
                 <a class="mins" @click="skuNum <= 1 ? 1 : skuNum--">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -380,6 +380,12 @@ export default {
 
       // 打印 num 和 this.skuNum 的值
       console.log(num, this.skuNum);
+    },
+    addCart() {
+      this.$store.dispatch("addToCart", {
+        sukId: this.$route.params.goodsId,
+        skuNum: this.skuNum,
+      });
     },
   },
   computed: {

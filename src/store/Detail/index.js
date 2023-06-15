@@ -1,4 +1,4 @@
-import { detailedInfo } from "@/api";
+import { detailedInfo, addToCart } from "@/api";
 
 //home模块的数据仓库
 const state = {
@@ -18,26 +18,32 @@ const actions = {
     if (result.code == 200) {
       commit("DETAILINFO", result.data);
       console.log(result);
-      
-      // console.log(result);
-      
     } else {
       console.log("请求错误");
+    }
+  },
+  async addToCart({ commit },  {sukId, skuNum} ) {
+    console.log(sukId,skuNum);
+    let result = await addToCart(sukId, skuNum);
+    
+    
+    if (result.code == 200) {
+      console.log("添加成功");
     }
   },
 };
 const getters = {
   categoryView(state) {
     // goodinfo初始是空对象 加上按位或判断 防止控制台报错
-    return state.goodinfo.categoryView||{};
+    return state.goodinfo.categoryView || {};
   },
   // 售卖信息书简化
   skuInfo(state) {
-    return state.goodinfo.skuInfo||{};
+    return state.goodinfo.skuInfo || {};
   },
   // 售卖属性简化
   spuSaleAttrList(state) {
-    return state.goodinfo.spuSaleAttrList||[];
+    return state.goodinfo.spuSaleAttrList || [];
   },
 };
 
