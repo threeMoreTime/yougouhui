@@ -42,8 +42,8 @@ const getters = {
 };
 
 export default {
-  // 命名空间 上锁
-  // namespaced:true,
+  // 命名空间 上锁 防止其它仓库有重名的方法
+  namespaced:true,
   state,
   mutations,
   actions,
