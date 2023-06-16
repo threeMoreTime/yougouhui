@@ -4,7 +4,14 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Detail from '@/pages/Detail';
 import AddCartSuccess from '@/pages/AddCartSuccess';
+import ShopCart from '@/pages/ShopCart';
 export default   [
+    {
+        path:'/ShopCart',
+        meta: { show: true },
+        name:'shopCart',
+        component:ShopCart ,
+    },
     {
         // 路由路径
         path: '/Detail/:goodsId',
