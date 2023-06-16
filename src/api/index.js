@@ -19,3 +19,5 @@ export const reqgoodslist = (params)=>requests({method:'post',url:'/list',data:p
 export const detailedInfo = (skuId ) => requests({method:'get',url:`/item/${skuId}`})
 // 添加购物车
 export const addToCart  = (sukId, skuNum) => requests({method:'post',url:`/cart/addToCart/${sukId}/${skuNum}`});
+// 获取购物车信息
+export const reqCartInfo = () => requests({ method: 'get', url: '/cart/cartList' });
