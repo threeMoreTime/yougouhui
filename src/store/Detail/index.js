@@ -1,9 +1,11 @@
 import { detailedInfo, addToCart } from "@/api";
-
+import { getuuid } from "@/utils/UUID_TOKEN";
 //home模块的数据仓库
 const state = {
   // 起始值是一个空数组 根据接口返回值创建数据
   goodinfo: {},
+  // 获取游客身份
+  UUID_TOKEN: getuuid(),
 };
 const computed = {};
 const mutations = {
@@ -21,12 +23,12 @@ const actions = {
       console.log("请求错误");
     }
   },
-  async addToCart({ commit },  {sukId, skuNum} ) {
-    let result = await addToCart(sukId, skuNum);  
+  async addToCart({ commit }, { sukId, skuNum }) {
+    let result = await addToCart(sukId, skuNum);
     if (result.code == 200) {
       console.log("成功");
-    }else{
-      return Promise.reject(new error('faile'))
+    } else {
+      return Promise.reject(new error("faile"));
     }
   },
 };
