@@ -11,21 +11,17 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list">
+        <ul class="cart-list" v-for="(cart, index) in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" />
+            <input type="checkbox" name="chk_list" v-model="cart.isChecked" />
+            {{ cart.isChecked }}
           </li>
           <li class="cart-list-con2">
-            <img :src="skuinfo.skuDefaultImg" />
-            <div class="item-msg">
-              {{ skuinfo.skuName }}
-            </div>
-          </li>
-          <li class="cart-list-con3">
-            <div class="item-txt">语音升级款</div>
+            <img :src="cart.imgUrl" />
+            <div class="item-msg">{{ cart.skuName }}</div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{ skuinfo.price }}</span>
+            <span style="margin-left: 80%" class="price">{{ cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
             <a @click="skuNum <= 1 ? 1 : skuNum--" class="mins">-</a>
@@ -39,7 +35,7 @@
             <a @click="skuNum++" class="plus">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ subTotal }}</span>
+            <span class="sum">{{ skuNum * cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet">删除</a>
@@ -51,8 +47,8 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
-        <span>全选</span>
+        <input class="chooseAll" type="checkbox" :checkbox="isALLchecked" />
+        <span>全选{{ isALLchecked }}</span>
       </div>
       <div class="option">
         <a href="#none">删除选中的商品</a>
@@ -63,7 +59,7 @@
         <div class="chosed">已选择 <span>0</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{ subTotal }}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -74,7 +70,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "ShopCart",
   data() {
@@ -84,14 +80,24 @@ export default {
   },
   mounted() {
     this.$store.dispatch("reqCartInfo");
+    console.log(this.$route);
   },
   computed: {
-    // 通过会话存储拿去声商品信息
-    skuinfo() {
-      return JSON.parse(sessionStorage.getItem("SKUINFO"));
-    },
+    // 计算购物车所有商品的总价
     subTotal() {
-      return this.skuNum * this.skuinfo.price;
+      let sum = 0;
+      this.cartInfoList.forEach((item) => {
+        sum += item.skuNum * item.skuPrice;
+      });
+      return sum;
+    },
+    // 判断是否全选（返回值1就取消全选 返回值0就全选）
+    isALLchecked() {
+      return this.cartInfoList.every((item) => item.isChecked == 1);
+    },
+    ...mapGetters(["cartListInfo", "cartInfoList"]),
+    cartInfoList() {
+      return this.cartListInfo.cartInfoList || [];
     },
   },
   methods: {
@@ -165,7 +171,7 @@ export default {
         }
 
         .cart-list-con1 {
-          width: 4.1667%;
+          width: 16%;
         }
 
         .cart-list-con2 {
@@ -199,6 +205,7 @@ export default {
 
         .cart-list-con5 {
           width: 12.5%;
+          margin-left: 7%;
 
           .mins {
             border: 1px solid #ddd;
@@ -232,6 +239,7 @@ export default {
 
         .cart-list-con6 {
           width: 12.5%;
+          margin-left: 2%;
 
           .sum {
             font-size: 16px;

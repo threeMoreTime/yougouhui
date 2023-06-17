@@ -33,6 +33,9 @@ export default {
       // info: JSON.parse(sessionStorage.getItem("SKUINFO")) || {},
     };
   },
+  mounted() {
+    this.$store.dispatch("reqCartInfo");
+  },
   computed: {
     skuInfo() {
       // 把sessionStorage存储的数据在转换为对象形式

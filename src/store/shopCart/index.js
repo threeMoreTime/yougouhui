@@ -15,15 +15,22 @@ const actions = {
   async reqCartInfo({ commit }) {
     let result = await reqCartInfo();
     if (result.code == 200) {
-      commit("DETAILINFO", result.data);
-      console.log(result);
-      
+      commit("CARTINFO", result.data);
     } else {
       console.log("请求错误");
     }
   },
 };
 const getters = {
+  // 简化后的信息数组
+  cartListInfo(state){
+    return state.Cartinfo[0]||[]
+  },
+  // 简化后的购物车列表信息
+  cartInfoList(state){
+    return state.Cartinfo[0].cartInfoList||[]
+  }
+
 };
 
 export default {
