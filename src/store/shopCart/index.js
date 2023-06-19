@@ -1,4 +1,4 @@
-import { reqCartInfo } from "@/api";
+import { reqCartInfo ,deleteCartInfo} from "@/api";
 //shopCart模块的数据仓库
 const state = {
   // 起始值是一个空数组 根据接口返回值创建数据
@@ -20,6 +20,16 @@ const actions = {
       console.log("请求错误");
     }
   },
+  async deleteCartInfo({commit},skuId){
+    let result = await deleteCartInfo(skuId)
+    
+      if (result.code==200) {
+        console.log('删除成功',result);
+      }else{
+        return Promise.reject(new error("faile"))
+      }
+    
+  }
 };
 const getters = {
   // 简化后的信息数组

@@ -11,16 +11,13 @@ const requests = axios.create({
 });
 // 请求拦截器 在发送请求前可以做一些时间
 requests.interceptors.request.use((config)=>{
+	// 请求时的蓝色进度条
 	nprogress.start();
-	console.log(store);
-	
+	// 如果token存在的话
 	if(store.state.detail.UUID_TOKEN){
+		// 拿到本地存储中
 		config.headers.userTempId=store.state.detail.UUID_TOKEN
-		// console.log(store.state.detail.UUID_TOKEN);
-		
 	}
-	
-	
 	return config;
 });
 

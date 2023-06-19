@@ -18,6 +18,8 @@ export const reqgoodslist = (params)=>requests({method:'post',url:'/list',data:p
 // 获取详细商品信息数据
 export const detailedInfo = (skuId ) => requests({method:'get',url:`/item/${skuId}`})
 // 添加购物车
-export const addToCart  = (sukId, skuNum) => requests({method:'post',url:`/cart/addToCart/${sukId}/${skuNum}`});
+export const addToCart  = (skuId, skuNum) => requests({method:'post',url:`/cart/addToCart/${skuId}/${skuNum}`});
 // 获取购物车信息
 export const reqCartInfo = () => requests({ method: 'get', url: '/cart/cartList' });
+// 删除购物车信息
+export const deleteCartInfo =(skuId)=>requests({method:'DELETE',url:`/cart/deleteCart/${skuId}`})
