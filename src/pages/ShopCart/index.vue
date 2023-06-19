@@ -24,21 +24,21 @@
             <span style="margin-left: 80%" class="price">{{ cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a @click="skuNum <= 1 ? 1 : skuNum--" class="mins">-</a>
+            <a @click="handel('decrease', -1, cart)" class="mins">-</a>
             <input
               autocomplete="off"
               type="text"
-              v-model="skuNum"
               class="itxt"
-              @change="changeSkuNum"
+              @change="handel('random', $event.target.value * 1, cart)"
+              :value="cart.skuNum"
             />
-            <a @click="skuNum++" class="plus">+</a>
+            <a @click="handel('add', +1, cart)" class="plus">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ skuNum * cart.skuPrice }}</span>
+            <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="removeCartItem(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -79,17 +79,14 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("reqCartInfo");
-    console.log(this.$route);
+    this.getData();
   },
   computed: {
     // 计算购物车所有商品的总价
     subTotal() {
-      let sum = 0;
-      this.cartInfoList.forEach((item) => {
-        sum += item.skuNum * item.skuPrice;
-      });
-      return sum;
+      return this.cartInfoList.reduce((sum, item) => {
+        return sum + item.skuNum * item.skuPrice;
+      }, 0);
     },
     // 判断是否全选（返回值1就取消全选 返回值0就全选）
     isALLchecked() {
@@ -101,11 +98,40 @@ export default {
     },
   },
   methods: {
-    changeSkuNum(event) {
-      // 从事件对象中获取输入字段的值
-      let num = parseFloat(event.target.value);
-      // 检查是否为 NaN 或小于 1，如果是则将 this.skuNum 设置为 1，否则将其设置为取整后的 num
-      this.skuNum = isNaN(num) || num < 1 ? 1 : Math.floor(num);
+    getData() {
+      this.$store.dispatch("reqCartInfo");
+    },
+    // type是请求类型 添加或减少  disnum是数量 cart是具体哪一个商品
+    async handel(type, disnum, cart) {
+      switch (type) {
+        case "add":
+          disnum = 1;
+          break;
+        case "decrease":
+          // 如果商品数量大于1则带‘-1’参数 小于1的话保持不变
+          cart.skuNum > 1 ? -1 : 0;
+          break;
+        case "random":
+          // 如果input中的值不是数字或者小于1 那么保持原来的数值不动 不然那么该数值向下取整并进去该商品的原来数量
+          disnum = isNaN(disnum) || disnum < 1 ? 0 : parseInt(disnum) - cart.skuNum;
+          console.log(disnum);
+          break;
+      }
+      try {
+        // 拿到参数发请求
+        await this.$store.dispatch("addToCart", { skuId: cart.skuId, skuNum: disnum });
+        await this.$store.dispatch("reqCartInfo");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async removeCartItem(cart) {
+      try {
+        await this.$store.dispatch("deleteCartInfo", cart.skuId);
+        await this.getData;
+      } catch (error) {
+        alert(error);
+      }
     },
   },
 };

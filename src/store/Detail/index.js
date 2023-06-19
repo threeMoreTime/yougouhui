@@ -23,10 +23,12 @@ const actions = {
       console.log("请求错误");
     }
   },
-  async addToCart({ commit }, { sukId, skuNum }) {
-    let result = await addToCart(sukId, skuNum);
+  async addToCart({ commit }, { skuId, skuNum }) {
+    let result = await addToCart(skuId, skuNum);
     if (result.code == 200) {
-      console.log("成功");
+      console.log('成功');
+      console.log('result',result);
+      
     } else {
       return Promise.reject(new error("faile"));
     }

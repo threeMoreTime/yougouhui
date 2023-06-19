@@ -381,7 +381,7 @@ export default {
       try {
         // 添加购物车成功进行路由跳转
         await this.$store.dispatch("addToCart", {
-          sukId: this.$route.params.goodsId,
+          skuId: this.$route.params.goodsId,
           skuNum: this.skuNum,
         });
         // 简单参数 skuNum可以直接传递
