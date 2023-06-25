@@ -13,8 +13,12 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="(cart, index) in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" v-model="cart.isChecked" />
-            {{ cart.isChecked }}
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checkbox="cart.isChecked == 1"
+              @click="updateChecked(cart, $event)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -48,7 +52,7 @@
     <div class="cart-tool">
       <div class="select-all">
         <input class="chooseAll" type="checkbox" :checkbox="isALLchecked" />
-        <span>全选{{ isALLchecked }}</span>
+        <span>全选</span>
       </div>
       <div class="option">
         <a href="#none">删除选中的商品</a>
@@ -70,6 +74,7 @@
 </template>
 
 <script>
+import throttle from "lodash/throttle";
 import { mapGetters, mapState } from "vuex";
 export default {
   name: "ShopCart",
@@ -101,8 +106,8 @@ export default {
     getData() {
       this.$store.dispatch("reqCartInfo");
     },
-    // type是请求类型 添加或减少  disnum是数量 cart是具体哪一个商品
-    async handel(type, disnum, cart) {
+    // type是请求类型 添加或减少  disnum是数量 cart是具体哪一个商品 节流写法0.5秒一次
+    handel: throttle(async function (type, disnum, cart) {
       switch (type) {
         case "add":
           disnum = 1;
@@ -124,13 +129,24 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    async removeCartItem(cart) {
+    }, 500),
+    // 节流写法，删除购物车商品
+    removeCartItem: throttle(async function (cart) {
       try {
+        // 成功重新刷新页面
         await this.$store.dispatch("deleteCartInfo", cart.skuId);
-        await this.getData;
+        this.getData();
       } catch (error) {
-        alert(error);
+        alert(error.message);
+      }
+    }, 1000),
+    // 修改购物车选中状态
+    async updateChecked(cart, $event) {
+      try {
+        let isChecked = $event.target.isChecked;
+        await this.$store.dispatch("EditCartInfo", { skuId: cart.skuId, isChecked });
+      } catch (error) {
+        console.log(error);
       }
     },
   },
