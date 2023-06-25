@@ -1,4 +1,4 @@
-import { reqCartInfo ,deleteCartInfo} from "@/api";
+import { reqCartInfo, deleteCartInfo, EditCartInfo } from "@/api";
 //shopCart模块的数据仓库
 const state = {
   // 起始值是一个空数组 根据接口返回值创建数据
@@ -20,27 +20,34 @@ const actions = {
       console.log("请求错误");
     }
   },
-  async deleteCartInfo({commit},skuId){
-    let result = await deleteCartInfo(skuId)
-    
-      if (result.code==200) {
-        console.log('删除成功',result);
-      }else{
-        return Promise.reject(new error("faile"))
-      }
-    
-  }
+  async deleteCartInfo({ commit }, skuId) {
+    let result = await deleteCartInfo(skuId);
+
+    if (result.code == 200) {
+      console.log("删除成功", result);
+    } else {
+      return Promise.reject(new error("faile"));
+    }
+  },
+  // 修改商品选中状态
+  async EditCartInfo({ commit }, { skuId, isChecked }) {
+    let result = await EditCartInfo(skuId, isChecked);
+    if (result.code) {
+      return "ok";
+    } else {
+      return Promise.reject(new error("faile"));
+    }
+  },
 };
 const getters = {
   // 简化后的信息数组
-  cartListInfo(state){
-    return state.Cartinfo[0]||[]
+  cartListInfo(state) {
+    return state.Cartinfo[0] || [];
   },
   // 简化后的购物车列表信息
-  cartInfoList(state){
-    return state.Cartinfo[0].cartInfoList||[]
-  }
-
+  cartInfoList(state) {
+    return state.Cartinfo[0].cartInfoList || [];
+  },
 };
 
 export default {
