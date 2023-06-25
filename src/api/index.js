@@ -23,3 +23,5 @@ export const addToCart  = (skuId, skuNum) => requests({method:'post',url:`/cart/
 export const reqCartInfo = () => requests({ method: 'get', url: '/cart/cartList' });
 // 删除购物车信息
 export const deleteCartInfo =(skuId)=>requests({method:'DELETE',url:`/cart/deleteCart/${skuId}`})
+// 修改购物车选中信息
+export const EditCartInfo =(skuID,isChecked)=>requests({method:'get',url:`/cart/checkCart/${skuID}/${isChecked}`})
