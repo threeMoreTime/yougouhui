@@ -16,8 +16,8 @@
             <input
               type="checkbox"
               name="chk_list"
-              :checkbox="cart.isChecked == 1"
-              @click="updateChecked(cart, $event)"
+              :checked="cart.isChecked"
+              @change="updateChecked(cart, $event)"
             />
           </li>
           <li class="cart-list-con2">
@@ -51,11 +51,16 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checkbox="isALLchecked" />
+        <input
+          class="chooseAll"
+          type="checkbox"
+          :checked="isALLchecked && cartInfoList.length > 0"
+          @change="updateAllChecked($event)"
+        />
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#none" @click="deleteSelected()">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -95,7 +100,10 @@ export default {
     },
     // 判断是否全选（返回值1就取消全选 返回值0就全选）
     isALLchecked() {
-      return this.cartInfoList.every((item) => item.isChecked == 1);
+      return (
+        this.cartInfoList.filter((item) => item.isChecked == "1").length ===
+        this.cartInfoList.length
+      );
     },
     ...mapGetters(["cartListInfo", "cartInfoList"]),
     cartInfoList() {
@@ -140,13 +148,39 @@ export default {
         alert(error.message);
       }
     }, 1000),
-    // 修改购物车选中状态
-    async updateChecked(cart, $event) {
+    // 删除勾选购物车商品
+    async deleteSelected() {
       try {
-        let isChecked = $event.target.isChecked;
-        await this.$store.dispatch("EditCartInfo", { skuId: cart.skuId, isChecked });
+        await this.$store.dispatch("allDeleteCartInfo");
+        this.getData();
+      } catch (error) {
+        alert("删除失败");
+      }
+    },
+    // 修改购物车某个商品的勾选状态
+    async updateChecked(cart, event) {
+      // 整理参数
+      let params = {
+        skuId: cart.skuId,
+        isChecked: event.target.checked ? "1" : "0",
+      };
+      // 发送请求修改商品勾选状态
+      try {
+        await this.$store.dispatch("EditCartInfo", params);
+        this.getData();
       } catch (error) {
         console.log(error);
+      }
+    },
+    // 全选修改购物车商品选中状态
+    async updateAllChecked(event) {
+      let isChecked = event.target.checked ? "1" : "0";
+      try {
+        //await等待成功:购物车全部商品勾选状态成功以后
+        await this.$store.dispatch("allUpdateChecked", isChecked);
+        this.getData();
+      } catch (error) {
+        alert("修改失败");
       }
     },
   },
