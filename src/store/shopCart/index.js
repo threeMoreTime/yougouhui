@@ -32,15 +32,14 @@ const actions = {
     }
   },
   // 删除勾选的商品
-  allDeleteCartInfo({ commit, state, dispatch }) {
-    let arr = [];
-    state.Cartinfo[0].cartInfoList.forEach((item) => {
-      if (item.isChecked == 1) {
-        let delteInfo = dispatch("deleteCartInfo", item.skuId);
-        arr.push(delteInfo);
-      }
-      return Promise.all(arr);
+  allDeleteCartInfo({ getters, state, dispatch }) {
+    let promiseAll = [];
+    getters.cartInfoList.forEach((item) => {
+      let promise =
+        item.isChecked == 1 ? dispatch("deleteCartInfo", item.skuId) : "";
+      promiseAll.push(promise);
     });
+    return Promise.all(promiseAll);
   },
   // 修改某一个商品选中状态
   async EditCartInfo({ commit }, { skuId, isChecked }) {
