@@ -82,7 +82,7 @@ export default {
         const phoneNumberRegex = /^1[3456789]\d{9}$/;
         if (phoneNumberRegex.test(this.phone)) {
           await this.$store.dispatch("getPhoneCode", this.phone);
-          this.code = this.$store.state.register.code;
+          this.code = this.$store.state.user.code;
         } else {
           alert("非法号码格式");
         }
