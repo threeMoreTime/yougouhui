@@ -13,10 +13,13 @@ const requests = axios.create({
 requests.interceptors.request.use((config)=>{
 	// 请求时的蓝色进度条
 	nprogress.start();
-	// 如果token存在的话
+	// 如果UUID存在的话,加入请求头中
 	if(store.state.detail.UUID_TOKEN){
-		// 拿到本地存储中
 		config.headers.userTempId=store.state.detail.UUID_TOKEN
+	}
+	//  如果token存在的话,加入请求头中
+	if (store.state.user.token) {
+		config.headers.token=store.state.user.token
 	}
 	return config;
 });
