@@ -28,3 +28,7 @@ export const deleteCartInfo =(skuId)=>requests({method:'DELETE',url:`/cart/delet
 export const EditCartInfo =(skuID,isChecked)=>requests({method:'get',url:`/cart/checkCart/${skuID}/${isChecked}`})
 // 注册用户账号
 export const signAccount = (data) => requests({url:'/user/passport/register',data,method:'post'})
+// 用户登陆
+export const userLogin = (data) =>requests({url:'/user/passport/login',data,method:'post'})
+// 获取用户信息
+export const reqUserInfo=(token)=>requests({url:'/user/passport/auth/getUserInfo',method:'get'})
