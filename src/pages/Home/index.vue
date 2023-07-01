@@ -45,8 +45,6 @@ export default {
   },
   mounted() {
     this.getarray();
-    // 获取用户信息展示
-    this.$store.dispatch("getUserInfo");
   },
   methods: {
     getarray() {
