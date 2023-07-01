@@ -34,3 +34,7 @@ export const userLogin = (data) =>requests({url:'/user/passport/login',data,meth
 export const reqUserInfo=(token)=>requests({url:'/user/passport/auth/getUserInfo',method:'get'})
 // 退出登陆
 export const signOut=()=>requests({url:'/user/passport/logout',method:'get'})
+// 获取用户订单信息
+export const reqOrderInfo=()=>requests({url:'/order/auth/trade',method:'get'})
+// 获取用户地址信息
+export const reqUserAddress=()=>requests({url:'/user/userAddress/auth/findUserAddressList',method:'get'})
