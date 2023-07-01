@@ -17,7 +17,10 @@
           <p>尚品汇欢迎您！</p>
           <p>
             <router-link to="/home">{{ getNickName }}</router-link>
-            <router-link class="register" to="/home">退出登陆</router-link>
+            <!-- <router-link class="register" to="/login" @click="goOut"
+              >退出登陆</router-link
+            > -->
+            <span class="register" @click="goOut">退出登陆</span>
           </p>
         </div>
 
@@ -73,9 +76,19 @@ export default {
       this.$router.push({ name: "search", params, query });
       console.log(this.keyword);
     },
+    // 退出登陆
+    async goOut() {
+      try {
+        // 成功就返回首页
+        await this.$store.dispatch("userSignOut");
+        this.$router.push("/login");
+      } catch (error) {
+        alert(error);
+      }
+    },
   },
   mounted() {
-    this.$store.dispatch("getUserInfo");
+    // this.$store.dispatch("getUserInfo");
     // 通过全局事件通信清楚搜索栏中的params参数
     this.$bus.$on("clear", () => {
       console.log("11111");

@@ -19,21 +19,21 @@
 </template>
 
 <script>
-import { getfloorlist } from '@/api'
-import { mapState } from 'vuex';
+import { getfloorlist } from "@/api";
+import { mapState } from "vuex";
 
-import Brand from './Brand'
-import Floor from './Floor';
-import Like from './Like';
-import ListContainer from './ListContainer';
-import Rank from './Rank/'
-import Recommend from './Recommend';
+import Brand from "./Brand";
+import Floor from "./Floor";
+import Like from "./Like";
+import ListContainer from "./ListContainer";
+import Rank from "./Rank/";
+import Recommend from "./Recommend";
 export default {
-  name: 'Home',
+  name: "Home",
   data() {
     return {
-      result: []
-    }
+      result: [],
+    };
   },
   components: {
     Brand,
@@ -44,19 +44,21 @@ export default {
     Recommend,
   },
   mounted() {
-    this.getarray()
+    this.getarray();
+    // 获取用户信息展示
+    this.$store.dispatch("getUserInfo");
   },
   methods: {
     getarray() {
       getfloorlist().then((res) => {
         // this.result= res.data
-        if (res.code == '200') {
-          this.result = res.data
+        if (res.code == "200") {
+          this.result = res.data;
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style></style>

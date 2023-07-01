@@ -32,3 +32,5 @@ export const signAccount = (data) => requests({url:'/user/passport/register',dat
 export const userLogin = (data) =>requests({url:'/user/passport/login',data,method:'post'})
 // 获取用户信息
 export const reqUserInfo=(token)=>requests({url:'/user/passport/auth/getUserInfo',method:'get'})
+// 退出登陆
+export const signOut=()=>requests({url:'/user/passport/logout',method:'get'})
