@@ -61,7 +61,6 @@ const actions = {
   async getUserInfo({ commit }) {
     let result = await reqUserInfo();
     if (result.code == 200) {
-      console.log(result);
       commit('GETUSERINFO',result.data)
       return 'OK'
     }else{
@@ -72,7 +71,7 @@ const actions = {
   async userSignOut({commit}){
     let result = await signOut();
     if (result.code==200) {
-      // 清楚用户信息
+      // 清除用户信息
       commit('CLEARALL')
 
     }else{
