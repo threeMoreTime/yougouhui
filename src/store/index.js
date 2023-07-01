@@ -8,6 +8,7 @@ import search from "./search";
 import detail from "./Detail";
 import shopCart from "./shopCart";
 import user from "./user";
+import trade from "./Trade";
 // 创建Vuex的实例
 const store = new Vuex.Store({
   modules: {
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
     search,
     detail,
     shopCart,
-    user
+    user,
+    trade
   },
 });
 export default store;
