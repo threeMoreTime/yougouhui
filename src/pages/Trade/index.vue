@@ -6,9 +6,9 @@
       <div class="address clearFix" v-for="item in address" :key="item.id">
         <span class="username selected">{{ item.consignee }}</span>
         <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">15010658793</span>
-          <span class="s3">默认地址</span>
+          <span class="s1">{{ item.fullAddress }}</span>
+          <span class="s2">{{ item.phoneNum }}</span>
+          <span class="s3">{{ item.userAddress }}</span>
         </p>
       </div>
       <div class="line"></div>
@@ -109,23 +109,20 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Trade",
   data() {
-    return {
-      result: "",
-    };
+    return {};
   },
   mounted() {
     // 获取用户订单信息
     this.$store.dispatch("getOrderList");
     this.$store.dispatch("getAddressList");
-    console.log(this.$store.state.trade.address);
   },
   methods: {},
   computed: {
-    ...mapState(["address"]),
+    ...mapGetters(["address", "order"]),
   },
 };
 </script>
