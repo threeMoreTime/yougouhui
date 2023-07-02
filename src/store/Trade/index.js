@@ -40,7 +40,14 @@ const actions = {
     }
   },
 };
-const getters = {};
+const getters = {
+  address(state){
+    return state.address
+  },
+  order(state){
+    return state.order
+  }
+};
 export default {
   state,
   mutations,
