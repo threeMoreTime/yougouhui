@@ -4,18 +4,38 @@
     <div class="content">
       <h5 class="receive">收件人信息</h5>
       <div class="address clearFix" v-for="item in address" :key="item.id">
-        <span class="username selected">{{ item.consignee }}</span>
-        <p>
+        <span class="username" :class="{ selected: item.isDefault == 1 }">{{
+          item.consignee
+        }}</span>
+        <p @click="checkedAddress(item, address)">
           <span class="s1">{{ item.fullAddress }}</span>
           <span class="s2">{{ item.phoneNum }}</span>
-          <span class="s3">{{ item.userAddress }}</span>
+          <span class="s3" v-show="item.isDefault == 1">默认地址</span>
         </p>
       </div>
       <div class="line"></div>
       <h5 class="pay">支付方式</h5>
       <div class="address clearFix">
-        <span class="username selected">在线支付</span>
-        <span class="username" style="margin-left: 5px">货到付款</span>
+        <span
+          class="username"
+          :class="{ selected: this.isApply == 'appleOne' }"
+          @click="isOnline('appleOne')"
+          >在线支付</span
+        >
+        <span
+          class="username"
+          :class="{ selected: this.isApply == 'appleTwo' }"
+          @click="isOnline('appleTwo')"
+          style="margin-left: 5px"
+          >货到付款</span
+        >
+        <span
+          class="username"
+          :class="{ selected: this.isApply == 'appleThree' }"
+          @click="isOnline('appleThree')"
+          style="margin-left: 5px"
+          >花呗分期</span
+        >
       </div>
       <div class="line"></div>
       <h5 class="pay">送货清单</h5>
@@ -28,21 +48,22 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul
+          class="list clearFix"
+          v-for="result in order.detailArrayList"
+          :key="result.skuId"
+        >
           <li>
-            <img src="./images/goods.png" alt="" />
+            <img :src="result.imgUrl" alt="" style="width: 100px; height: 100px" />
           </li>
           <li>
-            <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳
-              本色系列
-            </p>
+            <p>商品名称{{ result.skuName }}</p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>单价：{{ result.orderPrice }}</h3>
           </li>
-          <li>X1</li>
+          <li>数量：{{ result.skuNum }}</li>
           <li>有货</li>
         </ul>
         <ul class="list clearFix">
@@ -68,6 +89,7 @@
         <textarea
           placeholder="建议留言前先与商家沟通确认"
           class="remarks-cont"
+          v-model="message"
         ></textarea>
       </div>
       <div class="line"></div>
@@ -80,8 +102,11 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b
+            ><i>{{ order.totalNum }}</i
+            >件商品，总商品金额</b
+          >
+          <span>{{ order.totalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
@@ -94,12 +119,14 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥5399.00</span></div>
+      <div class="price">
+        应付金额:　<span>{{ order.originalTotalAmount }}</span>
+      </div>
       <div class="receiveInfo">
         寄送至:
-        <span>北京市昌平区宏福科技园综合楼6层</span>
-        收货人：<span>张三</span>
-        <span>15010658793</span>
+        <span>{{ userAddressInfo.fullAddress }}</span>
+        收货人：<span>{{ userAddressInfo.consignee }}</span>
+        <span>{{ userAddressInfo.phoneNum }}</span>
       </div>
     </div>
     <div class="sub clearFix">
@@ -109,20 +136,41 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "Trade",
   data() {
-    return {};
+    return {
+      message: "",
+      isApply: "appleOne",
+    };
   },
   mounted() {
     // 获取用户订单信息
     this.$store.dispatch("getOrderList");
     this.$store.dispatch("getAddressList");
   },
-  methods: {},
+  methods: {
+    // 排它操作
+    checkedAddress(item, address) {
+      address.forEach((noSelect) => {
+        noSelect.isDefault = 0;
+      });
+      item.isDefault = 1;
+    },
+    // 通过isApple属性控制高亮
+    isOnline(str) {
+      if (str !== this.isApply) {
+        this.isApply = str;
+      }
+    },
+  },
   computed: {
     ...mapGetters(["address", "order"]),
+    // 返回用户当前选中的地址信息
+    userAddressInfo() {
+      return this.address.find((item) => item.isDefault == 1) || {};
+    },
   },
 };
 </script>

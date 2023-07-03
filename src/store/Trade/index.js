@@ -42,10 +42,10 @@ const actions = {
 };
 const getters = {
   address(state){
-    return state.address
+    return state.address||[]
   },
   order(state){
-    return state.order
+    return state.order||{}
   }
 };
 export default {
