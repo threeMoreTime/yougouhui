@@ -80,7 +80,7 @@ export default {
         await this.$store.dispatch("userLogin", { phone, password });
         this.$router.push("/home");
       } catch (error) {
-        alert(error);
+        alert(error.message);
       }
     },
   },

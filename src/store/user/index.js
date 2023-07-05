@@ -54,7 +54,7 @@ const actions = {
       setToken(result.data.token)
       return 'OK'
     }else{
-      return Promise.reject(('账号或密码错误'))
+      return Promise.reject(new Error(result.message));
     }
   },
   // 获取用户信息
