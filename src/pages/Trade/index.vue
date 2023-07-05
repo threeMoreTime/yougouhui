@@ -130,7 +130,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="goPay">提交订单</a>
     </div>
   </div>
 </template>
@@ -163,6 +163,19 @@ export default {
       if (str !== this.isApply) {
         this.isApply = str;
       }
+    },
+    goPay() {
+      // let data = {
+      //   consignee: "admin",
+      //   consigneeTel: "17770215704",
+      //   deliveryAddress: "北京市昌平区2",
+      //   paymentWay: "ONLINE",
+      //   orderComment: this.message,
+      //   orderDetailList: this.order.detailArrayList,
+      // };
+      // let { tradeNo } = this.order.tradeNo;
+      // let result = await this.$API.pushOrderInfo(tradeNo, data);
+      this.$router.push("/pay");
     },
   },
   computed: {
