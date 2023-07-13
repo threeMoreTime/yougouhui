@@ -164,17 +164,19 @@ export default {
         this.isApply = str;
       }
     },
-    goPay() {
-      // let data = {
-      //   consignee: "admin",
-      //   consigneeTel: "17770215704",
-      //   deliveryAddress: "北京市昌平区2",
-      //   paymentWay: "ONLINE",
-      //   orderComment: this.message,
-      //   orderDetailList: this.order.detailArrayList,
-      // };
-      // let { tradeNo } = this.order.tradeNo;
-      // let result = await this.$API.pushOrderInfo(tradeNo, data);
+    async goPay() {
+      let data = {
+        consignee: this.userAddressInfo.consignee, //最终收件人的名字
+        consigneeTel: this.userAddressInfo.phoneNum, //电话号码
+        deliveryAddress: this.userAddressInfo.fullAddress, //地址
+        paymentWay: "ONLINE", //支付方式
+        orderComment: this.message, //留言信息
+        orderDetailList: this.order.detailArrayList, //商品列表
+      };
+      let { tradeNo } = this.order.tradeNo;
+
+      let result = await this.$API.pushOrderInfo(tradeNo, data);
+      console.log(result);
       this.$router.push("/pay");
     },
   },

@@ -6,7 +6,7 @@ import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
-import Pay from "@/pages/Pay";
+import Pay from '@/pages/pay'
 export default [
   {
     path: "/ShopCart",
@@ -59,10 +59,10 @@ export default [
     name: "trade",
   },
   {
-    path: "/Pay",
+    path: "/pay",
     component: Pay,
     meta: { show: true },
-    name: "pay",
+    name: "Pay",
   },
   {
     // 默认跳转到首页

@@ -8,6 +8,8 @@
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
     "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "element-ui": "^2.15.13",

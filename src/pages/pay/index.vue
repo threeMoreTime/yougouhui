@@ -99,23 +99,32 @@ export default {
       let payUrl = QRCode.toDataURL(
         "wxp://f2f0AdjBFPcGRZojWK1YPutquoLRAbMmlZOpBeCdtGbVsFM"
       );
-      console.log(payUrl);
-      this.$alert(`<img src=${payUrl} />`, "请用微信支付", {
-        dangerouslyUseHTMLString: true,
-        center: true,
-        // 是否显示取消的按钮
-        showCancelButton: true,
-        // 取消按钮的文本信息
-        cancelButtonText: "支付遇见问题",
-        // 确认按钮的文本
-        confirmButtonText: "已支付",
-        // 关闭按钮是否显示
-        showClose: false,
-      });
+      payUrl
+        .then((result) => {
+          this.$alert(`<img src=${result} />`, "请用微信支付", {
+            dangerouslyUseHTMLString: true,
+            center: true,
+            // 是否显示取消的按钮
+            showCancelButton: true,
+            // 取消按钮的文本信息
+            cancelButtonText: "支付遇见问题",
+            // 确认按钮的文本
+            confirmButtonText: "已支付",
+            // 关闭按钮是否显示
+            showClose: false,
+          });
+        })
+        .catch((err) => {
+          this.$alert({
+            message: "支付信息错误",
+            type: "error",
+          });
+        });
     },
     // 获取订单信息
     async getPayInfo() {
       let result = await this.$API.reqPayInfo(this.orderId);
+      console.log(result);
       try {
         if (result.code == "200") {
           console.log(result);

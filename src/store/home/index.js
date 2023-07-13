@@ -37,7 +37,6 @@ const actions = {
   async getbannerlist({ commit }) {
     try {
       let result = await getbannerlist();
-      // console.log(result, 'bannner轮播图中的数据');
       commit('BANNERLIST', result.data);
     }
     catch (error) {
@@ -50,8 +49,7 @@ const actions = {
     try {
       let result = await getfloorlist();
       commit('FLOORLIST',result.data);
-      // console.log(result,'floor轮播图中的数据');
-      
+  
     } catch (error) {
       console.log('error');
       
