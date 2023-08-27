@@ -120,7 +120,7 @@
     </div>
     <div class="trade">
       <div class="price">
-        应付金额:　<span>{{ order.originalTotalAmount }}</span>
+        应付金额: <span>{{ order.originalTotalAmount }}</span>
       </div>
       <div class="receiveInfo">
         寄送至:
@@ -148,6 +148,7 @@ export default {
   mounted() {
     // 获取用户订单信息
     this.$store.dispatch("getOrderList");
+    // 获取用户地址信息
     this.$store.dispatch("getAddressList");
   },
   methods: {
@@ -164,26 +165,37 @@ export default {
         this.isApply = str;
       }
     },
+    //提交订单
     async goPay() {
+      // 获取订单号
+      let tradeNo = this.order.tradeNo;
+      console.log("交易编号", tradeNo);
+
       let data = {
         consignee: this.userAddressInfo.consignee, //最终收件人的名字
         consigneeTel: this.userAddressInfo.phoneNum, //电话号码
         deliveryAddress: this.userAddressInfo.fullAddress, //地址
         paymentWay: "ONLINE", //支付方式
         orderComment: this.message, //留言信息
-        orderDetailList: this.order.detailArrayList, //商品列表
+        orderDetailList: this.order.detailArrayList, //购物车商品列表
       };
-      let { tradeNo } = this.order.tradeNo;
-
-      let result = await this.$API.pushOrderInfo(tradeNo, data);
-      console.log(result);
-      this.$router.push("/pay");
+      //提交订单
+      try {
+        await this.$store.dispatch("submitInfo", { tradeNo, data });
+        console.log("支付编号", this.payId);
+        //将来提交订单成功【订单ID生成】，路由跳转pay页面，进行支付
+        this.$router.push({ path: "/pay", query: { orderId: this.payId } });
+        console.log(result);
+      } catch (error) {
+        alert(error.message);
+      }
     },
   },
   computed: {
-    ...mapGetters(["address", "order"]),
+    ...mapGetters(["address", "order", "payId"]),
     // 返回用户当前选中的地址信息
     userAddressInfo() {
+      //find:数组的方法,找到复合条件的元素.回调需要返回布尔值【真|假】，真即为查找结果【如果多个结果都为真，取其中一个】
       return this.address.find((item) => item.isDefault == 1) || {};
     },
   },

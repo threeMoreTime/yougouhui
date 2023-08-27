@@ -89,16 +89,25 @@
 import QRCode from "qrcode";
 export default {
   name: "Pay",
+  data() {
+    return {
+      //支付状态码
+      code: "",
+      // 短轮询定时器
+      timer: null,
+      //支付信息
+      payInfo: {},
+    };
+  },
   mounted() {
+    // 获取支付信息
     this.getPayInfo();
   },
   methods: {
     // 点击支付后
     apyNow() {
       // 支付二维码
-      let payUrl = QRCode.toDataURL(
-        "wxp://f2f0AdjBFPcGRZojWK1YPutquoLRAbMmlZOpBeCdtGbVsFM"
-      );
+      let payUrl = QRCode.toDataURL(this.payInfo.codeUrl);
       payUrl
         .then((result) => {
           this.$alert(`<img src=${result} />`, "请用微信支付", {
@@ -112,6 +121,19 @@ export default {
             confirmButtonText: "已支付",
             // 关闭按钮是否显示
             showClose: false,
+            beforeClose: (type, instance, done) => {
+              //type是回调类型 成功()或者失败
+              //instance当前回调的实例对象
+              //done关闭弹框
+              //当用户取消支付时
+              if (type == "cancel") {
+                //清除定时器
+                clearInterval(this.timer);
+                //关闭盒子
+                done();
+                this.$message.error("支付异常请重新支付");
+              }
+            },
           });
         })
         .catch((err) => {
@@ -119,15 +141,39 @@ export default {
             message: "支付信息错误",
             type: "error",
           });
+          this.$router.push("/home");
         });
+      //查询支付结果,开启定时器每隔一段时间询问支付结果
+      this.timer = setInterval(async () => {
+        //发请求获取支付结果
+        let result = await this.$API.reqPayResult(this.orderId);
+        //返回数据当中：code=200代表支付成功  code=205未支付
+        if (result.code == 200) {
+          //支付成功了
+          //存储一下支付成功的code数值，通过他判断支付是否成功
+          this.code = result.code;
+          //清除定时器
+          clearInterval(this.timer);
+          //关闭messagebox
+          this.$msgbox.close();
+          //在路由跳转
+          this.$router.push("/paySuccess");
+        } else {
+          //未支付
+          this.code = result.code;
+        }
+      }, 1000);
     },
-    // 获取订单信息
+    // 获取支付信息
     async getPayInfo() {
-      let result = await this.$API.reqPayInfo(this.orderId);
+      console.log("this.$route.query", this.$route.query.orderId);
+
+      let result = await this.$API.reqPayInfo(this.$route.query.orderId);
       console.log(result);
       try {
         if (result.code == "200") {
-          console.log(result);
+          this.payInfo = result.data;
+          console.log("支付信息", result.data);
         }
       } catch (error) {
         return Promise.reject(new Error(error.message));
